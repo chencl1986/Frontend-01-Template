@@ -2,11 +2,13 @@
 
 ### Entity
 
-1. Entity转换库：[he](https://github.com/mathiasbynens/he)
+1. Entity 转换库：[he](https://github.com/mathiasbynens/he)
 
-2. Entity使用场景：
+2. Entity 使用场景：
 
-   调用PC端支付宝支付，会返回如下表单：
+   详细可以查看文章：[https://juejin.im/post/5e958768518825739b2d3e31](https://juejin.im/post/5e958768518825739b2d3e31)
+
+   调用 PC 端支付宝支付，会返回如下表单：
 
 ```
 <form name="punchout_form" method="post" action="https://openapi.alipay.com/gateway.do?charset=utf-8&method=alipay.trade.page.pay&sign=XXX&return_url=https%3A%2F%2Fwww.xxx.com&notify_url=http%3A%2F%2Fxxx.com&version=1.0&app_id=2016021401143890&sign_type=RSA2&timestamp=2020-04-11+12%3A54%3A21&alipay_sdk=alipay-sdk-java-4.8.10.ALL&format=json">
@@ -38,9 +40,7 @@ he.decode('encoded string', {
     不转换会导致支付宝无法正常解析参数，因此要把Entity转换成普通字符，如&quot;转换成"。
     前端可以直接将支付宝返回的表单写入HTML，浏览器会自动处理成正常格式。
 
-    
-
-3. Entity列表：
+1. Entity 列表：
 
 | Name                             | Character(s)    | Glyph |
 | -------------------------------- | --------------- | ----- |
@@ -127,7 +127,7 @@ he.decode('encoded string', {
 | Ascr;                            | U+1D49C         | 𝒜     |
 | ascr;                            | U+1D4B6         | 𝒶     |
 | Assign;                          | U+02254         | ≔     |
-| ast;                             | U+0002A         | *     |
+| ast;                             | U+0002A         | \*    |
 | asymp;                           | U+02248         | ≈     |
 | asympeq;                         | U+0224D         | ≍     |
 | Atilde;                          | U+000C3         | Ã     |
@@ -195,8 +195,8 @@ he.decode('encoded string', {
 | blk14;                           | U+02591         | ░     |
 | blk34;                           | U+02593         | ▓     |
 | block;                           | U+02588         | █     |
-| bne;                             | U+0003D U+020E5 | =⃥     |
-| bnequiv;                         | U+02261 U+020E5 | ≡⃥     |
+| bne;                             | U+0003D U+020E5 | =⃥    |
+| bnequiv;                         | U+02261 U+020E5 | ≡⃥    |
 | bNot;                            | U+02AED         | ⫭     |
 | bnot;                            | U+02310         | ⌐     |
 | Bopf;                            | U+1D539         | 𝔹     |
@@ -278,7 +278,7 @@ he.decode('encoded string', {
 | capcup;                          | U+02A47         | ⩇     |
 | capdot;                          | U+02A40         | ⩀     |
 | CapitalDifferentialD;            | U+02145         | ⅅ     |
-| caps;                            | U+02229 U+0FE00 | ∩︀     |
+| caps;                            | U+02229 U+0FE00 | ∩︀    |
 | caret;                           | U+02041         | ⁁     |
 | caron;                           | U+002C7         | ˇ     |
 | Cayleys;                         | U+0212D         | ℭ     |
@@ -387,7 +387,7 @@ he.decode('encoded string', {
 | cupcup;                          | U+02A4A         | ⩊     |
 | cupdot;                          | U+0228D         | ⊍     |
 | cupor;                           | U+02A45         | ⩅     |
-| cups;                            | U+0222A U+0FE00 | ∪︀     |
+| cups;                            | U+0222A U+0FE00 | ∪︀    |
 | curarr;                          | U+021B7         | ↷     |
 | curarrm;                         | U+0293C         | ⤼     |
 | curlyeqprec;                     | U+022DE         | ⋞     |
@@ -459,12 +459,12 @@ he.decode('encoded string', {
 | djcy;                            | U+00452         | ђ     |
 | dlcorn;                          | U+0231E         | ⌞     |
 | dlcrop;                          | U+0230D         | ⌍     |
-| dollar;                          | U+00024         | $     |
+| dollar;                          | U+00024         | \$    |
 | Dopf;                            | U+1D53B         | 𝔻     |
 | dopf;                            | U+1D555         | 𝕕     |
 | Dot;                             | U+000A8         | ¨     |
 | dot;                             | U+002D9         | ˙     |
-| DotDot;                          | U+020DC         | ◌⃜     |
+| DotDot;                          | U+020DC         | ◌⃜    |
 | doteq;                           | U+02250         | ≐     |
 | doteqdot;                        | U+02251         | ≑     |
 | DotEqual;                        | U+02250         | ≐     |
@@ -694,7 +694,7 @@ he.decode('encoded string', {
 | gesdot;                          | U+02A80         | ⪀     |
 | gesdoto;                         | U+02A82         | ⪂     |
 | gesdotol;                        | U+02A84         | ⪄     |
-| gesl;                            | U+022DB U+0FE00 | ⋛︀     |
+| gesl;                            | U+022DB U+0FE00 | ⋛︀    |
 | gesles;                          | U+02A94         | ⪔     |
 | Gfr;                             | U+1D50A         | 𝔊     |
 | gfr;                             | U+1D524         | 𝔤     |
@@ -747,8 +747,8 @@ he.decode('encoded string', {
 | gtreqqless;                      | U+02A8C         | ⪌     |
 | gtrless;                         | U+02277         | ≷     |
 | gtrsim;                          | U+02273         | ≳     |
-| gvertneqq;                       | U+02269 U+0FE00 | ≩︀     |
-| gvnE;                            | U+02269 U+0FE00 | ≩︀     |
+| gvertneqq;                       | U+02269 U+0FE00 | ≩︀    |
+| gvnE;                            | U+02269 U+0FE00 | ≩︀    |
 | Hacek;                           | U+002C7         | ˇ     |
 | hairsp;                          | U+0200A         |
 | half;                            | U+000BD         | ½     |
@@ -937,7 +937,7 @@ he.decode('encoded string', {
 | lAtail;                          | U+0291B         | ⤛     |
 | latail;                          | U+02919         | ⤙     |
 | late;                            | U+02AAD         | ⪭     |
-| lates;                           | U+02AAD U+0FE00 | ⪭︀     |
+| lates;                           | U+02AAD U+0FE00 | ⪭︀    |
 | lBarr;                           | U+0290E         | ⤎     |
 | lbarr;                           | U+0290C         | ⤌     |
 | lbbrk;                           | U+02772         | ❲     |
@@ -1008,7 +1008,7 @@ he.decode('encoded string', {
 | lesdot;                          | U+02A7F         | ⩿     |
 | lesdoto;                         | U+02A81         | ⪁     |
 | lesdotor;                        | U+02A83         | ⪃     |
-| lesg;                            | U+022DA U+0FE00 | ⋚︀     |
+| lesg;                            | U+022DA U+0FE00 | ⋚︀    |
 | lesges;                          | U+02A93         | ⪓     |
 | lessapprox;                      | U+02A85         | ⪅     |
 | lessdot;                         | U+022D6         | ⋖     |
@@ -1074,7 +1074,7 @@ he.decode('encoded string', {
 | loplus;                          | U+02A2D         | ⨭     |
 | lotimes;                         | U+02A34         | ⨴     |
 | lowast;                          | U+02217         | ∗     |
-| lowbar;                          | U+0005F         | _     |
+| lowbar;                          | U+0005F         | \_    |
 | LowerLeftArrow;                  | U+02199         | ↙     |
 | LowerRightArrow;                 | U+02198         | ↘     |
 | loz;                             | U+025CA         | ◊     |
@@ -1119,8 +1119,8 @@ he.decode('encoded string', {
 | ltrPar;                          | U+02996         | ⦖     |
 | lurdshar;                        | U+0294A         | ⥊     |
 | luruhar;                         | U+02966         | ⥦     |
-| lvertneqq;                       | U+02268 U+0FE00 | ≨︀     |
-| lvnE;                            | U+02268 U+0FE00 | ≨︀     |
+| lvertneqq;                       | U+02268 U+0FE00 | ≨︀    |
+| lvnE;                            | U+02268 U+0FE00 | ≨︀    |
 | macr;                            | U+000AF         | ¯     |
 | macr                             | U+000AF         | ¯     |
 | male;                            | U+02642         | ♂     |
@@ -1147,7 +1147,7 @@ he.decode('encoded string', {
 | micro;                           | U+000B5         | µ     |
 | micro                            | U+000B5         | µ     |
 | mid;                             | U+02223         | ∣     |
-| midast;                          | U+0002A         | *     |
+| midast;                          | U+0002A         | \*    |
 | midcir;                          | U+02AF0         | ⫰     |
 | middot;                          | U+000B7         | ·     |
 | middot                           | U+000B7         | ·     |
@@ -1173,7 +1173,7 @@ he.decode('encoded string', {
 | nabla;                           | U+02207         | ∇     |
 | Nacute;                          | U+00143         | Ń     |
 | nacute;                          | U+00144         | ń     |
-| nang;                            | U+02220 U+020D2 | ∠⃒     |
+| nang;                            | U+02220 U+020D2 | ∠⃒    |
 | nap;                             | U+02249         | ≉     |
 | napE;                            | U+02A70 U+00338 | ⩰̸     |
 | napid;                           | U+0224B U+00338 | ≋̸     |
@@ -1225,7 +1225,7 @@ he.decode('encoded string', {
 | nges;                            | U+02A7E U+00338 | ⩾̸     |
 | nGg;                             | U+022D9 U+00338 | ⋙̸     |
 | ngsim;                           | U+02275         | ≵     |
-| nGt;                             | U+0226B U+020D2 | ≫⃒     |
+| nGt;                             | U+0226B U+020D2 | ≫⃒    |
 | ngt;                             | U+0226F         | ≯     |
 | ngtr;                            | U+0226F         | ≯     |
 | nGtv;                            | U+0226B U+00338 | ≫̸     |
@@ -1254,7 +1254,7 @@ he.decode('encoded string', {
 | nless;                           | U+0226E         | ≮     |
 | nLl;                             | U+022D8 U+00338 | ⋘̸     |
 | nlsim;                           | U+02274         | ≴     |
-| nLt;                             | U+0226A U+020D2 | ≪⃒     |
+| nLt;                             | U+0226A U+020D2 | ≪⃒    |
 | nlt;                             | U+0226E         | ≮     |
 | nltri;                           | U+022EA         | ⋪     |
 | nltrie;                          | U+022EC         | ⋬     |
@@ -1315,13 +1315,13 @@ he.decode('encoded string', {
 | NotSquareSubsetEqual;            | U+022E2         | ⋢     |
 | NotSquareSuperset;               | U+02290 U+00338 | ⊐̸     |
 | NotSquareSupersetEqual;          | U+022E3         | ⋣     |
-| NotSubset;                       | U+02282 U+020D2 | ⊂⃒     |
+| NotSubset;                       | U+02282 U+020D2 | ⊂⃒    |
 | NotSubsetEqual;                  | U+02288         | ⊈     |
 | NotSucceeds;                     | U+02281         | ⊁     |
 | NotSucceedsEqual;                | U+02AB0 U+00338 | ⪰̸     |
 | NotSucceedsSlantEqual;           | U+022E1         | ⋡     |
 | NotSucceedsTilde;                | U+0227F U+00338 | ≿̸     |
-| NotSuperset;                     | U+02283 U+020D2 | ⊃⃒     |
+| NotSuperset;                     | U+02283 U+020D2 | ⊃⃒    |
 | NotSupersetEqual;                | U+02289         | ⊉     |
 | NotTilde;                        | U+02241         | ≁     |
 | NotTildeEqual;                   | U+02244         | ≄     |
@@ -1330,7 +1330,7 @@ he.decode('encoded string', {
 | NotVerticalBar;                  | U+02224         | ∤     |
 | npar;                            | U+02226         | ∦     |
 | nparallel;                       | U+02226         | ∦     |
-| nparsl;                          | U+02AFD U+020E5 | ⫽⃥     |
+| nparsl;                          | U+02AFD U+020E5 | ⫽⃥    |
 | npart;                           | U+02202 U+00338 | ∂̸     |
 | npolint;                         | U+02A14         | ⨔     |
 | npr;                             | U+02280         | ⊀     |
@@ -1363,7 +1363,7 @@ he.decode('encoded string', {
 | nsub;                            | U+02284         | ⊄     |
 | nsubE;                           | U+02AC5 U+00338 | ⫅̸     |
 | nsube;                           | U+02288         | ⊈     |
-| nsubset;                         | U+02282 U+020D2 | ⊂⃒     |
+| nsubset;                         | U+02282 U+020D2 | ⊂⃒    |
 | nsubseteq;                       | U+02288         | ⊈     |
 | nsubseteqq;                      | U+02AC5 U+00338 | ⫅̸     |
 | nsucc;                           | U+02281         | ⊁     |
@@ -1371,7 +1371,7 @@ he.decode('encoded string', {
 | nsup;                            | U+02285         | ⊅     |
 | nsupE;                           | U+02AC6 U+00338 | ⫆̸     |
 | nsupe;                           | U+02289         | ⊉     |
-| nsupset;                         | U+02283 U+020D2 | ⊃⃒     |
+| nsupset;                         | U+02283 U+020D2 | ⊃⃒    |
 | nsupseteq;                       | U+02289         | ⊉     |
 | nsupseteqq;                      | U+02AC6 U+00338 | ⫆̸     |
 | ntgl;                            | U+02279         | ≹     |
@@ -1389,22 +1389,22 @@ he.decode('encoded string', {
 | num;                             | U+00023         | #     |
 | numero;                          | U+02116         | №     |
 | numsp;                           | U+02007         |
-| nvap;                            | U+0224D U+020D2 | ≍⃒     |
+| nvap;                            | U+0224D U+020D2 | ≍⃒    |
 | nVDash;                          | U+022AF         | ⊯     |
 | nVdash;                          | U+022AE         | ⊮     |
 | nvDash;                          | U+022AD         | ⊭     |
 | nvdash;                          | U+022AC         | ⊬     |
-| nvge;                            | U+02265 U+020D2 | ≥⃒     |
-| nvgt;                            | U+0003E U+020D2 | >⃒     |
+| nvge;                            | U+02265 U+020D2 | ≥⃒    |
+| nvgt;                            | U+0003E U+020D2 | >⃒    |
 | nvHarr;                          | U+02904         | ⤄     |
 | nvinfin;                         | U+029DE         | ⧞     |
 | nvlArr;                          | U+02902         | ⤂     |
-| nvle;                            | U+02264 U+020D2 | ≤⃒     |
-| nvlt;                            | U+0003C U+020D2 | <⃒     |
-| nvltrie;                         | U+022B4 U+020D2 | ⊴⃒     |
+| nvle;                            | U+02264 U+020D2 | ≤⃒    |
+| nvlt;                            | U+0003C U+020D2 | <⃒    |
+| nvltrie;                         | U+022B4 U+020D2 | ⊴⃒    |
 | nvrArr;                          | U+02903         | ⤃     |
-| nvrtrie;                         | U+022B5 U+020D2 | ⊵⃒     |
-| nvsim;                           | U+0223C U+020D2 | ∼⃒     |
+| nvrtrie;                         | U+022B5 U+020D2 | ⊵⃒    |
+| nvsim;                           | U+0223C U+020D2 | ∼⃒    |
 | nwarhk;                          | U+02923         | ⤣     |
 | nwArr;                           | U+021D6         | ⇖     |
 | nwarr;                           | U+02196         | ↖     |
@@ -1829,7 +1829,7 @@ he.decode('encoded string', {
 | smile;                           | U+02323         | ⌣     |
 | smt;                             | U+02AAA         | ⪪     |
 | smte;                            | U+02AAC         | ⪬     |
-| smtes;                           | U+02AAC U+0FE00 | ⪬︀     |
+| smtes;                           | U+02AAC U+0FE00 | ⪬︀    |
 | SOFTcy;                          | U+0042C         | Ь     |
 | softcy;                          | U+0044C         | ь     |
 | sol;                             | U+0002F         | /     |
@@ -1841,9 +1841,9 @@ he.decode('encoded string', {
 | spadesuit;                       | U+02660         | ♠     |
 | spar;                            | U+02225         | ∥     |
 | sqcap;                           | U+02293         | ⊓     |
-| sqcaps;                          | U+02293 U+0FE00 | ⊓︀     |
+| sqcaps;                          | U+02293 U+0FE00 | ⊓︀    |
 | sqcup;                           | U+02294         | ⊔     |
-| sqcups;                          | U+02294 U+0FE00 | ⊔︀     |
+| sqcups;                          | U+02294 U+0FE00 | ⊔︀    |
 | Sqrt;                            | U+0221A         | √     |
 | sqsub;                           | U+0228F         | ⊏     |
 | sqsube;                          | U+02291         | ⊑     |
@@ -1962,7 +1962,7 @@ he.decode('encoded string', {
 | tcedil;                          | U+00163         | ţ     |
 | Tcy;                             | U+00422         | Т     |
 | tcy;                             | U+00442         | т     |
-| tdot;                            | U+020DB         | ◌⃛     |
+| tdot;                            | U+020DB         | ◌⃛    |
 | telrec;                          | U+02315         | ⌕     |
 | Tfr;                             | U+1D517         | 𝔗     |
 | tfr;                             | U+1D531         | 𝔱     |
@@ -2016,7 +2016,7 @@ he.decode('encoded string', {
 | tridot;                          | U+025EC         | ◬     |
 | trie;                            | U+0225C         | ≜     |
 | triminus;                        | U+02A3A         | ⨺     |
-| TripleDot;                       | U+020DB         | ◌⃛     |
+| TripleDot;                       | U+020DB         | ◌⃛    |
 | triplus;                         | U+02A39         | ⨹     |
 | trisb;                           | U+029CD         | ⧍     |
 | tritime;                         | U+02A3B         | ⨻     |
@@ -2073,7 +2073,7 @@ he.decode('encoded string', {
 | umacr;                           | U+0016B         | ū     |
 | uml;                             | U+000A8         | ¨     |
 | uml                              | U+000A8         | ¨     |
-| UnderBar;                        | U+0005F         | _     |
+| UnderBar;                        | U+0005F         | \_    |
 | UnderBrace;                      | U+023DF         | ⏟     |
 | UnderBracket;                    | U+023B5         | ⎵     |
 | UnderParenthesis;                | U+023DD         | ⏝     |
@@ -2135,10 +2135,10 @@ he.decode('encoded string', {
 | varr;                            | U+02195         | ↕     |
 | varrho;                          | U+003F1         | ϱ     |
 | varsigma;                        | U+003C2         | ς     |
-| varsubsetneq;                    | U+0228A U+0FE00 | ⊊︀     |
-| varsubsetneqq;                   | U+02ACB U+0FE00 | ⫋︀     |
-| varsupsetneq;                    | U+0228B U+0FE00 | ⊋︀     |
-| varsupsetneqq;                   | U+02ACC U+0FE00 | ⫌︀     |
+| varsubsetneq;                    | U+0228A U+0FE00 | ⊊︀    |
+| varsubsetneqq;                   | U+02ACB U+0FE00 | ⫋︀    |
+| varsupsetneq;                    | U+0228B U+0FE00 | ⊋︀    |
+| varsupsetneqq;                   | U+02ACC U+0FE00 | ⫌︀    |
 | vartheta;                        | U+003D1         | ϑ     |
 | vartriangleleft;                 | U+022B2         | ⊲     |
 | vartriangleright;                | U+022B3         | ⊳     |
@@ -2169,18 +2169,18 @@ he.decode('encoded string', {
 | Vfr;                             | U+1D519         | 𝔙     |
 | vfr;                             | U+1D533         | 𝔳     |
 | vltri;                           | U+022B2         | ⊲     |
-| vnsub;                           | U+02282 U+020D2 | ⊂⃒     |
-| vnsup;                           | U+02283 U+020D2 | ⊃⃒     |
+| vnsub;                           | U+02282 U+020D2 | ⊂⃒    |
+| vnsup;                           | U+02283 U+020D2 | ⊃⃒    |
 | Vopf;                            | U+1D54D         | 𝕍     |
 | vopf;                            | U+1D567         | 𝕧     |
 | vprop;                           | U+0221D         | ∝     |
 | vrtri;                           | U+022B3         | ⊳     |
 | Vscr;                            | U+1D4B1         | 𝒱     |
 | vscr;                            | U+1D4CB         | 𝓋     |
-| vsubnE;                          | U+02ACB U+0FE00 | ⫋︀     |
-| vsubne;                          | U+0228A U+0FE00 | ⊊︀     |
-| vsupnE;                          | U+02ACC U+0FE00 | ⫌︀     |
-| vsupne;                          | U+0228B U+0FE00 | ⊋︀     |
+| vsubnE;                          | U+02ACB U+0FE00 | ⫋︀    |
+| vsubne;                          | U+0228A U+0FE00 | ⊊︀    |
+| vsupnE;                          | U+02ACC U+0FE00 | ⫌︀    |
+| vsupne;                          | U+0228B U+0FE00 | ⊋︀    |
 | Vvdash;                          | U+022AA         | ⊪     |
 | vzigzag;                         | U+0299A         | ⦚     |
 | Wcirc;                           | U+00174         | Ŵ     |
@@ -2275,4 +2275,3 @@ he.decode('encoded string', {
 | zscr;                            | U+1D4CF         | 𝓏     |
 | zwj;                             | U+0200D         | ‍     |
 | zwnj;                            | U+0200C         | ‌     |
-
