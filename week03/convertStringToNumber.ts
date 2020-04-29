@@ -90,7 +90,7 @@ export default function convertStringToNumber(
 }
 
 // console.log(convertStringToNumber('9.9', 10));
-console.log(convertStringToNumber('-9.9', 10));
+// console.log(convertStringToNumber('-9.9', 10));
 // console.log(convertStringToNumber('a.a', 16));
 
 /**
