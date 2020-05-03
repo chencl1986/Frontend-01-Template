@@ -6,11 +6,15 @@
 } */
 
 /* for (let i = 0; i < 10; i++) {
-  let i = 0;
-  console.log(i);
-} */
+  console.log(i); // index
+}
 
-/* // 每次循环相当于
+for (let i = 0; i < 10; i++) {
+  let i = 0;
+  console.log(i); // always 0
+}
+
+// 每次循环相当于产生了两个嵌套的作用域
 {
   let i = 0;
   {
@@ -19,7 +23,21 @@
   }
 } */
 
-/* function run() {
+/* for (var i = 0; i < 10; i++) {
+  console.log(i);
+}
+
+for (i = 0; i < 10; i++) {
+  var i;
+  console.log(i);
+}
+
+for (i = 0; i < 10; i++) {
+  console.log(i);
+}
+var i;
+
+function run() {
   for (i = 0; i < 10; i++) {
     console.log(i);
   }
@@ -28,15 +46,19 @@
 }
 run() */
 
-/* function* g() {
+/* for (const key in {a: 1, b: 2}) {
+  console.log(key);
+} */
+
+/* for (const p of [1, 2, 3]) {
+  console.log(p);
+}
+
+function* g() {
   yield 1;
   yield 2;
   yield 3;
   yield 4;
-}
-
-for (const p of [1, 2, 3]) {
-  console.log(p);
 }
 
 for (const p of g()) {
@@ -46,8 +68,11 @@ for (const p of g()) {
 /* try {
   throw 2;
 } catch (error) {
-  let error; // SyntaxError: Identifier 'error' has already been declared
+  var error; // 不会报错，而且能正常打印出2
+  // let error; // SyntaxError: Identifier 'error' has already been declared
   console.log(error);
+} finally {
+  // 最终都会执行
 } */
 
 /* // 函数声明
@@ -193,10 +218,10 @@ foo();
 console.log(cls1);
  */
 
-function foo() {
+/* function foo() {
   console.log(this);
   return {a: 1};
 }
 
 foo();
-new foo();
+new foo(); */
