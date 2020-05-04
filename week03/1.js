@@ -179,5 +179,12 @@ function foo2() {
 }
 
 foo1() && foo2(); // 1
-foo1() || foo2(); // 1, 2
- */
+foo1() || foo2(); // 1, 2 */
+
+/* function f() {
+  console.log(1);
+  return 1;
+}
+
+var a = (f(), 2, 3); // 1
+console.log(a); // 3 */
