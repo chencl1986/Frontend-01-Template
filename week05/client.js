@@ -46,38 +46,28 @@ class TrunkedBodyParser {
         this.current = this.WAITING_LENGTH_LINE_END;
       } else {
         // 传入的长度是字符串，而存储的长度是数字，再次做转换
-        this.length *= 10; // 在10进制的末位加一位，故乘以10
-        this.length += char.charCodeAt(0) - '0'.charCodeAt(0);
+        this.length *= 16; // 在16进制的末位加一位，故乘以16
+        this.length += parseInt(char, 16);
       }
-    }
-
-    if (this.current === this.WAITING_LENGTH_LINE_END) {
+    } else if (this.current === this.WAITING_LENGTH_LINE_END) {
       // 碰到\r表示读取长度完成
       if (char === '\n') {
         this.current = this.READING_TRUNK;
       }
-    }
-
-    if (this.current === this.READING_TRUNK) {
+    } else if (this.current === this.READING_TRUNK) {
       // 防止换行符被存储
-      if (char !== '\r' && char !== '\n') {
-        this.content.push(char);
-        this.length--; // 处理完一个字符，长度减1
+      this.content.push(char);
+      this.length--; // 处理完一个字符，长度减1
 
-        // 读取完成
-        if (this.length === 0) {
-          this.current = this.WAITING_NEW_LINE;
-        }
+      // 读取完成
+      if (this.length === 0) {
+        this.current = this.WAITING_NEW_LINE;
       }
-    }
-
-    if (this.current === this.WAITING_NEW_LINE) {
+    } else if (this.current === this.WAITING_NEW_LINE) {
       if (char === '\r') {
         this.current = this.WAITING_NEW_LINE_END;
       }
-    }
-
-    if (this.current === this.WAITING_NEW_LINE_END) {
+    } else if (this.current === this.WAITING_NEW_LINE_END) {
       if (char === '\n') {
         this.current = this.WAITING_LENGTH;
       }
