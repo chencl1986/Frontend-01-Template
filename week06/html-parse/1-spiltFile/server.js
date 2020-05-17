@@ -29,7 +29,6 @@ body div img{
 </html>`;
   // let body = `<html maaa=a ><head><style>body div #myid{width:100px;background-color: #ff5000;}body div img{width:30px;background-color: #ff1111;}</style></head><body><div><img id="myid"/><img /></div></body></html>`;
   // body = 'OK';
-  console.log(body);
   res.end(body);
 });
 
