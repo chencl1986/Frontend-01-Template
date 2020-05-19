@@ -16,11 +16,6 @@ let stack = [
 
 // 进行token输出方法
 function emit(currentToken) {
-  // 暂时不处理文本内容
-  if (currentToken.type === 'text') {
-    return;
-  }
-  console.log(currentToken);
   let top = stack[stack.length - 1];
 
   // 为Token起始时，创建一个元素
@@ -35,7 +30,7 @@ function emit(currentToken) {
 
     for (const prop in currentToken) {
       // 储存标签属性
-      if (prop !== 'type' && prop !== 'tagName') {
+      if (prop !== 'type' || prop !== 'tagName') {
         element.attributes.push({
           name: prop,
           value: currentToken[prop],
@@ -52,6 +47,7 @@ function emit(currentToken) {
       // 非单标签即入栈，等待接收其子节点
       stack.push(element);
     }
+    currentTextNode = null;
   } else if (currentToken.type === 'endTag') {
     if (top.tagName !== currentToken.tagName) {
       // 实际浏览器遇到关闭标签不一致或缺失，也会进行处理
@@ -61,6 +57,18 @@ function emit(currentToken) {
       stack.pop();
     }
     currentTextNode = null;
+  } else if (currentToken.type === 'text') {
+    // 如果当前没有节点则新建一个
+    if (currentTextNode === null) {
+      currentTextNode = {
+        type: 'text',
+        content: '',
+      };
+      top.children.push(currentTextNode);
+    }
+    // 存储文本内容
+    currentTextNode.content += currentToken.content;
+    console.log(currentTextNode.content);
   }
 }
 
@@ -338,5 +346,6 @@ module.exports.parseHTML = function parseHTML(html) {
 
   // 用EOF表示文件已结束
   state = state(EOF);
-  console.dir(stack);
+  console.log(stack[0]);
+  return stack[0];
 };
