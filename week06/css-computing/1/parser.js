@@ -13,6 +13,7 @@ let stack = [
     children: [],
   },
 ];
+const addCSSRule = require('./css').addCSSRule;
 
 // 进行token输出方法
 function emit(currentToken) {
@@ -53,6 +54,10 @@ function emit(currentToken) {
       // 实际浏览器遇到关闭标签不一致或缺失，也会进行处理
       throw new Error("Tag start end doesn't match");
     } else {
+      // 遇到style标签时，执行添加CSS操作
+      if (currentToken.tagName === 'style') {
+        addCSSRule(top.children[0].content);
+      }
       // 当前节点处理完成之后，将当前节点出栈，等待处理其兄弟伙父节点
       stack.pop();
     }
@@ -68,7 +73,6 @@ function emit(currentToken) {
     }
     // 存储文本内容
     currentTextNode.content += currentToken.content;
-    console.log(currentTextNode.content);
   }
 }
 

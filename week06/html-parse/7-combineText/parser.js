@@ -68,7 +68,6 @@ function emit(currentToken) {
     }
     // 存储文本内容
     currentTextNode.content += currentToken.content;
-    console.log(currentTextNode.content);
   }
 }
 
