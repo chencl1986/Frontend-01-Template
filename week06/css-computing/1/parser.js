@@ -1,3 +1,4 @@
+const css = require('css');
 // 创建一个唯一的文件结束标识字符
 const EOF = Symbol('EOF'); // EOF: End OF File
 // 存储当前token数据
@@ -13,7 +14,14 @@ let stack = [
     children: [],
   },
 ];
-const addCSSRule = require('./css').addCSSRule;
+let rules = []; // 储存CSS规则
+
+// 添加CSS规则
+function addCSSRule(text) {
+  const ast = css.parse(text);
+  console.log(JSON.stringify(ast));
+  rules.push(...ast.stylesheet.rules);
+};
 
 // 进行token输出方法
 function emit(currentToken) {

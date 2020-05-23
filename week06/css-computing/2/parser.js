@@ -1,3 +1,4 @@
+const css = require('css');
 // 创建一个唯一的文件结束标识字符
 const EOF = Symbol('EOF'); // EOF: End OF File
 // 存储当前token数据
@@ -13,7 +14,20 @@ let stack = [
     children: [],
   },
 ];
-const {addCSSRule, computeCSS} = require('./css');
+let rules = []; // 储存CSS规则
+
+// 添加CSS规则
+function addCSSRule(text) {
+  const ast = css.parse(text);
+  console.log(JSON.stringify(ast));
+  rules.push(...ast.stylesheet.rules);
+}
+
+// 计算CSS
+function computeCSS(element) {
+  console.log(rules);
+  console.log('compute CSS for Element', element);
+}
 
 // 进行token输出方法
 function emit(currentToken) {
@@ -41,6 +55,7 @@ function emit(currentToken) {
 
     // 每次加载元素时，都进行一次CSS计算，避免全部加载后再计算造成的页面加载延迟
     // 即每次加载当前元素时，都会计算其之前元素的CSS
+    // 最佳实践就是将CSS尽可能写在Header中
     computeCSS(element);
 
     // 将当前节点push到其父节点的children中
