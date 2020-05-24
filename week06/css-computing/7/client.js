@@ -297,6 +297,7 @@ void (async function () {
   // console.log(response);
   // 将HTML字符串处理成DOM树
   const dom = parser.parseHTML(response.body);
+  console.log(dom);
 })();
 
 /* // 测试toString方法

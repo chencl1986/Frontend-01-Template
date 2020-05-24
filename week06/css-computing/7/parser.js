@@ -19,7 +19,6 @@ let rules = []; // 储存CSS规则
 // 添加CSS规则
 function addCSSRule(text) {
   const ast = css.parse(text);
-  // console.log(JSON.stringify(ast));
   rules.push(...ast.stylesheet.rules);
 }
 
@@ -105,8 +104,6 @@ function compare(sp1, sp2) {
 
 // 计算CSS
 function computeCSS(element) {
-  // console.log(rules);
-  // console.log('compute CSS for Element', element);
   // 获取父元素序列
   // 此时的stack中存放了当前元素的所有父元素
   // 使用slice方法将stack复制一份，避免之后的操作影响到stack
@@ -200,7 +197,6 @@ function emit(currentToken) {
     // 即每次加载当前元素时，都会计算其之前元素的CSS
     // 最佳实践就是将CSS尽可能写在Header中
     computeCSS(element);
-    console.log(JSON.stringify(element));
 
     // 将当前节点push到其父节点的children中
     top.children.push(element);
@@ -515,6 +511,5 @@ module.exports.parseHTML = function parseHTML(html) {
 
   // 用EOF表示文件已结束
   state = state(EOF);
-  // console.log(stack[0]);
   return stack[0];
 };
