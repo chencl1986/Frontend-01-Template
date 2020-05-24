@@ -24,7 +24,44 @@ function addCSSRule(text) {
 }
 
 // 匹配选择器和元素算法
-function match(element, selector) {}
+function match(element, selector) {
+  // 由于之后要使用selector和element.attributes对比，防止它们为undefined
+  if (!selector || !element.attributes) {
+    return false;
+  }
+
+  // id选择器判断
+  if (selector.charAt(0) === '#') {
+    // 抽取当前元素的id属性值
+    const attr = element.attributes.filter((attr) => attr.name === 'id')[0];
+
+    // 对比当前元素的id属性值和选择器是否相等
+    if (attr && attr.value === selector.replace('#', '')) {
+      return true;
+    }
+  }
+
+  // 类名选择器判断
+  else if (selector.charAt(0) === '.') {
+    // 抽取当前元素的class属性值
+    // 标签的class属性可为空格分隔，实际需要增加此判断，此处略过
+    const attr = element.attributes.filter((attr) => attr.name === 'class')[0];
+
+    // 对比当前元素的class属性值和选择器是否相等
+    if (attr && attr.value === selector.replace('.', '')) {
+      return true;
+    }
+  }
+
+  // 元素选择器判断
+  else {
+    if (element.tagName === selector) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 // 计算CSS
 function computeCSS(element) {
@@ -68,6 +105,7 @@ function computeCSS(element) {
 
       // 如果选择器与元素父级可匹配
       if (matched) {
+        // 此时要把样式加入元素的属性中
         console.log('Element', element, 'matched rule', rule);
       }
     }
