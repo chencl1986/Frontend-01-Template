@@ -19,7 +19,7 @@ let rules = []; // 储存CSS规则
 // 添加CSS规则
 function addCSSRule(text) {
   const ast = css.parse(text);
-  console.log(JSON.stringify(ast));
+  // console.log(JSON.stringify(ast));
   rules.push(...ast.stylesheet.rules);
 }
 
@@ -65,11 +65,11 @@ function match(element, selector) {
 
 // 计算CSS
 function computeCSS(element) {
-  console.log(rules);
-  console.log('compute CSS for Element', element);
+  console.log('computeCSS', element);
+  // console.log(rules);
+  // console.log('compute CSS for Element', element);
   // 获取父元素序列
   // 此时的stack中存放了当前元素的所有父元素
-  // 也可以用element.parent属性逐级向上查找父元素，此时由于computeCSS方法处于parser.js中，已经有stack，因此直接使用
   // 使用slice方法将stack复制一份，避免之后的操作影响到stack
   // 在计算CSS时，要从当前元素向父级逐级查找，如匹配dev dev #myid
   // 因此将stack反转一下方便处理。
@@ -108,6 +108,21 @@ function computeCSS(element) {
       if (matched) {
         // 此时要把样式加入元素的属性中
         console.log('Element', element, 'matched rule', rule);
+        const computedStyle = element.computedStyle;
+
+        // 合并所有属性
+        for (const declaration of rule.declarations) {
+          // 由于需要处理属性优先级等操作，需要以对象形式保存computedStyle
+          if (!computedStyle[declaration.property]) {
+            computedStyle[declaration.property] = {};
+          }
+
+          // 此处未计算优先级，直接使用新获取的属性覆盖了之前的属性
+          computedStyle[declaration.property].value = declaration.value;
+        }
+        // 重置标识，避免重复计算
+        matched = false;
+        j = 1;
       }
     }
   }
@@ -455,6 +470,6 @@ module.exports.parseHTML = function parseHTML(html) {
 
   // 用EOF表示文件已结束
   state = state(EOF);
-  console.log(stack[0]);
+  // console.log(stack[0]);
   return stack[0];
 };

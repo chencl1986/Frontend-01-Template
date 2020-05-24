@@ -29,6 +29,7 @@ function computeCSS(element) {
   console.log('compute CSS for Element', element);
   // 获取父元素序列
   // 此时的stack中存放了当前元素的所有父元素
+  // 也可以用element.parent属性逐级向上查找父元素，此时由于computeCSS方法处于parser.js中，已经有stack，因此直接使用
   // 使用slice方法将stack复制一份，避免之后的操作影响到stack
   // 在计算CSS时，要从当前元素向父级逐级查找，如匹配dev dev #myid
   // 因此将stack反转一下方便处理。
