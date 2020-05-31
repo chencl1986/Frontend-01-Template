@@ -241,6 +241,137 @@ function layout(element) {
   flexLine.mainSpace = mainSpace;
   // flexLine.crossSpace = crossSpace;
 
+  // 如果是不可换行切自动计算宽度
+  if (style.flexWrap === 'nowrap' || isAutoMainSize) {
+    // 若父级交叉轴高度存在，则将当前交叉轴高度设置为父级高度，否则设置为当前行的交叉轴高度
+    flexLine.crossSpace =
+      style[crossSize] !== undefined ? style[crossSize] : crossSpace;
+  } else {
+    // 若是可换行，则设置为当前行交叉轴高度
+    flexLine.crossSpace = crossSpace;
+  }
+
+  // 在单行的情况下，会出现mainSpace为负。
+  // 即子元素在排满当前行之后，没有生育空间
+  // 此时需要对子元素进行缩放
+  if (mainSpace < 0) {
+    // 计算当前的缩放比例，由于mainSpace为负，scale必然小于0
+    const scale = style[mainSize] / (style[mainSize] - mainSpace);
+    // 设置当前排版位置初始值
+    let currentMain = mainBase;
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      const itemStyle = getStyle(item);
+
+      // 设置flex属性的元素，在子元素超出父级宽度之后，都会被设置为0
+      if (itemStyle.flex) {
+        itemStyle[mainSize] = 0;
+      }
+
+      // 其他元素则按比例缩放
+      itemStyle[mainSize] = itemStyle[mainSize] * scale;
+
+      // 设置当前元素的排版位置
+      itemStyle[mainStart] = currentMain;
+      // 设置当前元素排版的结束位置
+      itemStyle[mainEnd] =
+        itemStyle[mainStart] + mainSign * itemStyle[mainSize];
+      // 设置下一个元素的排版起始位置
+      currentMain = itemStyle[mainEnd];
+    }
+  }
+
+  // 多行的情况
+  else {
+    flexLines.forEach((items) => {
+      // 当前行剩余空间
+      let mainSpace = items.mainSpace;
+      // 当前行flex总值，用于计算剩余宽度中，flex属性元素的排版比例
+      let flexTotal = 0;
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        let itemStyle = getStyle(item);
+
+        if (itemStyle.flex !== null && itemStyle.flex !== void 0) {
+          // 计算flex总值
+          flexTotal += itemStyle.flex;
+          continue;
+        }
+      }
+
+      // 需要计算flex元素宽度
+      if (flexTotal > 0) {
+        let currentMain = mainBase;
+
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          let itemStyle = getStyle(item);
+
+          // 为有flex属性的元素设置宽度
+          if (itemStyle.flex) {
+            // 按照当前元素在总flex中的比例设置其宽度
+            itemStyle[mainSize] = (mainSpace / flexTotal) * itemStyle.flex;
+          }
+
+          // 设置当前元素的排版位置
+          itemStyle[mainStart] = currentMain;
+          // 设置当前元素排版的结束位置
+          itemStyle[mainEnd] =
+            itemStyle[mainStart] + mainSign * itemStyle[mainSize];
+          // 设置下一个元素的排版起始位置
+          currentMain = itemStyle[mainEnd];
+        }
+      } else {
+        // 如果没有flex属性元素，此时还会有剩余空间，justifyContent属性就会被触发，进行方向排版
+        if (style.justifyContent === 'flex-start') {
+          // 设置当前排版位置初始值
+          var currentMain = mainBase;
+          // 设置元素的间距初始值
+          var step = 0;
+        }
+        if (style.justifyContent === 'flex-end') {
+          // 设置当前排版位置初始值
+          var currentMain = mainSpace * mainSign + mainBase;
+          // 设置元素的间距初始值
+          var step = 0;
+        }
+        if (style.justifyContent === 'center') {
+          // 设置当前排版位置初始值
+          var currentMain = (mainSpace / 2) * mainSign + mainBase;
+          // 设置元素的间距初始值
+          var step = 0;
+        }
+        if (style.justifyContent === 'space-between') {
+          // 设置当前排版位置初始值
+          var currentMain = mainBase;
+          // 设置元素的间距初始值
+          var step = (mainSpace / (items.length - 1)) * mainSign;
+        }
+        if (style.justifyContent === 'space-around') {
+          // 设置元素的间距初始值
+          var step = (mainSpace / items.length) * mainSign;
+          // 设置当前排版位置初始值
+          var currentMain = step / 2 + mainBase;
+        }
+
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          let itemStyle = getStyle(item);
+
+          // 设置当前元素的排版位置
+          itemStyle[mainStart] = currentMain;
+          // 设置当前元素排版的结束位置
+          itemStyle[mainEnd] =
+            itemStyle[mainStart] + mainSign * itemStyle[mainSize];
+          // 设置下一个元素的排版起始位置，元素之间有间隔，因此要加上step
+          currentMain = itemStyle[mainEnd] + step;
+        }
+      }
+    });
+  }
+
   console.log(items);
 }
 

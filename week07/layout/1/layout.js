@@ -143,3 +143,5 @@ function layout(element) {
     crossSign = 1;
   }
 }
+
+module.exports = layout;
