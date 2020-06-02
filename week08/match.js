@@ -13,7 +13,6 @@ function matchElement(element, selector) {
       ? element.getAttribute('class').trim().replace(/\s+/, ' ').split(' ')
       : [],
   );
-  // console.log(selectors, classNameSet);
 
   for (let index = 0; index < selectors.length; index++) {
     const selector = selectors[index];
@@ -55,63 +54,120 @@ function matchElement(element, selector) {
 
 // 查找每个层级的元素
 function recursionElement(element, selectorArr, selectorIndex) {
-  const isMatched = matchElement(element, selectorArr[selectorIndex]);
-  // console.log(element, selectorArr, selectorIndex, isMatched);
-
-  // 当已遍历完选择器，读取当前的匹配结果
-  if (selectorIndex === selectorArr.length - 1) {
-    return isMatched;
-  }
-
-  // 如果未遍历完选择器，且当前选择器可匹配当前元素，则继续遍历其父级
-  if (isMatched) {
+  /* console.log(
+    element,
+    element.parentNode,
+    selectorArr[selectorIndex],
+    selectorIndex,
+  ); */
+  if (selectorArr[selectorIndex] === '>') {
+    let isMatchedParent = matchElement(element, selectorArr[++selectorIndex]);
+    if (!isMatchedParent) {
+      return false;
+    }
+    if (
+      element.parentNode.nodeName === '#document' ||
+      selectorIndex === selectorArr.length - 1
+    ) {
+      return isMatchedParent;
+    }
     return recursionElement(element.parentNode, selectorArr, ++selectorIndex);
   }
 
-  return false;
+  const isMatched = matchElement(element, selectorArr[selectorIndex]);
+  /* console.log(
+    element,
+    element.parentNode,
+    selectorArr[selectorIndex],
+    selectorIndex,
+    isMatched,
+  ); */
+
+  if (!selectorIndex && !isMatched) {
+    return false;
+  }
+
+  if (element.parentNode.nodeName === '#document') {
+    return isMatched;
+  }
+
+  if (isMatched) {
+    if (selectorIndex === selectorArr.length - 1) {
+      return isMatched;
+    }
+    return recursionElement(element.parentNode, selectorArr, ++selectorIndex);
+  }
+  return recursionElement(element.parentNode, selectorArr, selectorIndex);
 }
 
-function match(selector, element) {
+function match(selector, element, realResult) {
   // 将选择器拆分
   const selectorArr = selector.split(' ').reverse();
   const result = recursionElement(element, selectorArr, 0);
-  console.log(selector, element, result);
+  console.log(
+    realResult === result ? '测试OK' : '测试Fail',
+    selector,
+    element,
+    result,
+  );
 
   return result;
 }
 
 console.log('简单选择器测试：');
-match('#id', document.getElementById('id'));
-match('.class', document.getElementById('id'));
-match('[data-test]', document.getElementById('id'));
-match('[data-test="testValue"]', document.getElementById('id'));
+match('#id', document.getElementById('id'), true);
+match('.class', document.getElementById('id'), true);
+match('[data-test]', document.getElementById('id'), true);
+match('[data-test="testValue"]', document.getElementById('id'), true);
 
 console.log('复合选择器测试：');
-match('div#id.class[data-test="testValue"]', document.getElementById('id'));
+match(
+  'div#id.class[data-test="testValue"]',
+  document.getElementById('id'),
+  true,
+);
 
 console.log('复杂选择器之后代选择器测试：');
-match('div #id.class', document.getElementById('id'));
-match('body #id.class', document.getElementById('id'));
-match('body div #id.class', document.getElementById('id'));
-match('div div #id.class', document.getElementById('id'));
-match('div #id.class[data-test]', document.getElementById('id'));
-match('body div #id.class[data-test]', document.getElementById('id'));
-match('div div #id.class[data-test]', document.getElementById('id'));
-match('div #id.class[data-test="testValue"]', document.getElementById('id'));
-match('div div#id.class[data-test="testValue"]', document.getElementById('id'));
+match('div #id.class', document.getElementById('id'), true);
+match('body div #id.class', document.getElementById('id'), true);
+match('body #id.class', document.getElementById('id'), true);
+match('div div #id.class', document.getElementById('id'), false);
+match('div #id.class[data-test]', document.getElementById('id'), true);
+match('body div #id.class[data-test]', document.getElementById('id'), true);
+match('div div #id.class[data-test]', document.getElementById('id'), false);
+match(
+  'div #id.class[data-test="testValue"]',
+  document.getElementById('id'),
+  true,
+);
+match(
+  'div div#id.class[data-test="testValue"]',
+  document.getElementById('id'),
+  true,
+);
 match(
   'body div #id.class[data-test="testValue"]',
   document.getElementById('id'),
+  true,
 );
 match(
   'div div #id.class[data-test="testValue"]',
   document.getElementById('id'),
+  false,
 );
 
+console.log('复杂选择器之后代选择器测试：');
+match('body > div > #id.class', document.getElementById('id'), true);
+match('body > #id.class', document.getElementById('id'), false);
+
 console.log('测试不同元素：');
-match('div #id.class', document.querySelector('.class1'));
-match('body div #id.class', document.querySelector('.class1'));
-match('div div #id.class', document.querySelector('.class1'));
-match('div #id.class[data-test]', document.querySelector('.class1'));
-match('body div #id.class[data-test]', document.querySelector('.class1'));
-match('div div #id.class[data-test]', document.querySelector('.class1'));
+match('div #id.class', document.querySelector('.class1'), false);
+match('body div #id.class', document.querySelector('.class1'), false);
+match('div div #id.class', document.querySelector('.class1'), false);
+match('div #id.class[data-test]', document.querySelector('.class1'), false);
+match(
+  'body div #id.class[data-test]',
+  document.querySelector('.class1'),
+  false,
+);
+match('div div #id.class[data-test]', document.querySelector('.class1'), false);
