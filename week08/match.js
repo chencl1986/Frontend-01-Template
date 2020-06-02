@@ -80,38 +80,38 @@ function match(selector, element) {
   return result;
 }
 
-// console.log('简单选择器测试：');
-// match('#id', document.getElementById('id'));
-// match('.class', document.getElementById('id'));
-// match('[data-test]', document.getElementById('id'));
-// match('[data-test="testValue"]', document.getElementById('id'));
+console.log('简单选择器测试：');
+match('#id', document.getElementById('id'));
+match('.class', document.getElementById('id'));
+match('[data-test]', document.getElementById('id'));
+match('[data-test="testValue"]', document.getElementById('id'));
 
-// console.log('复合选择器测试：');
-// match('div#id.class[data-test="testValue"]', document.getElementById('id'));
+console.log('复合选择器测试：');
+match('div#id.class[data-test="testValue"]', document.getElementById('id'));
 
-// console.log('复杂选择器之后代选择器测试：');
-// match('div #id.class', document.getElementById('id'));
-// match('body #id.class', document.getElementById('id'));
-// match('body div #id.class', document.getElementById('id'));
-// match('div div #id.class', document.getElementById('id'));
-// match('div #id.class[data-test]', document.getElementById('id'));
-// match('body div #id.class[data-test]', document.getElementById('id'));
-// match('div div #id.class[data-test]', document.getElementById('id'));
-// match('div #id.class[data-test="testValue"]', document.getElementById('id'));
-// match('div div#id.class[data-test="testValue"]', document.getElementById('id'));
-// match(
-//   'body div #id.class[data-test="testValue"]',
-//   document.getElementById('id'),
-// );
-// match(
-//   'div div #id.class[data-test="testValue"]',
-//   document.getElementById('id'),
-// );
+console.log('复杂选择器之后代选择器测试：');
+match('div #id.class', document.getElementById('id'));
+match('body #id.class', document.getElementById('id'));
+match('body div #id.class', document.getElementById('id'));
+match('div div #id.class', document.getElementById('id'));
+match('div #id.class[data-test]', document.getElementById('id'));
+match('body div #id.class[data-test]', document.getElementById('id'));
+match('div div #id.class[data-test]', document.getElementById('id'));
+match('div #id.class[data-test="testValue"]', document.getElementById('id'));
+match('div div#id.class[data-test="testValue"]', document.getElementById('id'));
+match(
+  'body div #id.class[data-test="testValue"]',
+  document.getElementById('id'),
+);
+match(
+  'div div #id.class[data-test="testValue"]',
+  document.getElementById('id'),
+);
 
-// console.log('测试不同元素：');
-// match('div #id.class', document.querySelector('.class1'));
-// match('body div #id.class', document.querySelector('.class1'));
-// match('div div #id.class', document.querySelector('.class1'));
-// match('div #id.class[data-test]', document.querySelector('.class1'));
-// match('body div #id.class[data-test]', document.querySelector('.class1'));
-// match('div div #id.class[data-test]', document.querySelector('.class1'));
+console.log('测试不同元素：');
+match('div #id.class', document.querySelector('.class1'));
+match('body div #id.class', document.querySelector('.class1'));
+match('div div #id.class', document.querySelector('.class1'));
+match('div #id.class[data-test]', document.querySelector('.class1'));
+match('body div #id.class[data-test]', document.querySelector('.class1'));
+match('div div #id.class[data-test]', document.querySelector('.class1'));
