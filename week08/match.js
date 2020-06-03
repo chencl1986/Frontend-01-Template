@@ -114,20 +114,23 @@ function match(selector, element, realResult) {
   return result;
 }
 
-console.log('简单选择器测试：');
+console.log('\n简单选择器测试：');
+match('*', document.getElementById('id'), true);
 match('#id', document.getElementById('id'), true);
 match('.class', document.getElementById('id'), true);
 match('[data-test]', document.getElementById('id'), true);
 match('[data-test="testValue"]', document.getElementById('id'), true);
 
-console.log('复合选择器测试：');
+console.log('\n复合选择器测试：');
 match(
   'div#id.class[data-test="testValue"]',
   document.getElementById('id'),
   true,
 );
 
-console.log('复杂选择器之后代选择器测试：');
+console.log('\n复杂选择器之后代选择器测试：');
+match('div *', document.getElementById('id'), true);
+match('body * #id.class', document.getElementById('id'), true);
 match('div #id.class', document.getElementById('id'), true);
 match('body div #id.class', document.getElementById('id'), true);
 match('body #id.class', document.getElementById('id'), true);
@@ -156,11 +159,11 @@ match(
   false,
 );
 
-console.log('复杂选择器之后代选择器测试：');
+console.log('\n复杂选择器之后代选择器测试：');
 match('body > div > #id.class', document.getElementById('id'), true);
 match('body > #id.class', document.getElementById('id'), false);
 
-console.log('测试不同元素：');
+console.log('\n测试不同元素：');
 match('div #id.class', document.querySelector('.class1'), false);
 match('body div #id.class', document.querySelector('.class1'), false);
 match('div div #id.class', document.querySelector('.class1'), false);
