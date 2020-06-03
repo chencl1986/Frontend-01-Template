@@ -29,7 +29,7 @@ function matchElement(element, selector) {
       }
     } else if (selector.startsWith('[')) {
       if (selector.match('=')) {
-        // 此处可以加入属性选择器的多种类型判断
+        // 此处可以加入属性选择器的多种类型判断，来不及补充了
         const matchedAttr = selector.match(/\[(.+)=\"(.+)\"\]/) || [];
 
         if (element.getAttribute(matchedAttr[1]) !== matchedAttr[2]) {
@@ -63,6 +63,7 @@ function recursionElement(prevElement, element, selectorArr, selectorIndex) {
     selectorIndex,
   ); */
 
+  // 子代选择器
   if (selectorArr[selectorIndex] === '>') {
     const isMatchedParent = matchElement(element, selectorArr[++selectorIndex]);
     if (!isMatchedParent) {
@@ -82,6 +83,7 @@ function recursionElement(prevElement, element, selectorArr, selectorIndex) {
     );
   }
 
+  // 相邻兄弟选择器
   if (selectorArr[selectorIndex] === '+') {
     const isMatchedAdjacent = matchElement(
       prevElement.previousElementSibling,
@@ -104,6 +106,7 @@ function recursionElement(prevElement, element, selectorArr, selectorIndex) {
     );
   }
 
+  // 匹配当前元素
   const isMatched = matchElement(element, selectorArr[selectorIndex]);
   /* console.log(
     element,
@@ -113,18 +116,23 @@ function recursionElement(prevElement, element, selectorArr, selectorIndex) {
     isMatched,
   ); */
 
+  // 第一个元素无法匹配，则返回false
   if (!selectorIndex && !isMatched) {
-    return false;
+    return isMatched;
   }
 
+  // 已匹配玩所有元素，则返回结果
   if (element.parentNode.nodeName === '#document') {
     return isMatched;
   }
 
+  // 后代选择器
   if (isMatched) {
+    // 若当前已匹配到最后一个选择器，则返回结果
     if (selectorIndex === selectorArr.length - 1) {
       return isMatched;
     }
+    // 若当前元素已匹配，则使用下一个选择器匹配其父级
     return recursionElement(
       element,
       element.parentNode,
@@ -132,6 +140,8 @@ function recursionElement(prevElement, element, selectorArr, selectorIndex) {
       ++selectorIndex,
     );
   }
+
+  // 若当前元素未匹配，则继续用当前选择器匹配其父级
   return recursionElement(
     element,
     element.parentNode,
@@ -211,7 +221,7 @@ match(
   document.getElementById('id'),
   true,
 );
-match('body div + #id.class', document.getElementById('id'), false);
+match('body div + #id.class', document.getElementById('id'), true);
 match('body + #id.class', document.getElementById('id'), false);
 
 // console.log('\n测试不同元素：');
