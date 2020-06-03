@@ -29,6 +29,7 @@ function matchElement(element, selector) {
       }
     } else if (selector.startsWith('[')) {
       if (selector.match('=')) {
+        // 此处可以加入属性选择器的多种类型判断
         const matchedAttr = selector.match(/\[(.+)=\"(.+)\"\]/) || [];
 
         if (element.getAttribute(matchedAttr[1]) !== matchedAttr[2]) {
@@ -53,15 +54,17 @@ function matchElement(element, selector) {
 }
 
 // 查找每个层级的元素
-function recursionElement(element, selectorArr, selectorIndex) {
+function recursionElement(prevElement, element, selectorArr, selectorIndex) {
   /* console.log(
+    prevElement,
     element,
     element.parentNode,
     selectorArr[selectorIndex],
     selectorIndex,
   ); */
+
   if (selectorArr[selectorIndex] === '>') {
-    let isMatchedParent = matchElement(element, selectorArr[++selectorIndex]);
+    const isMatchedParent = matchElement(element, selectorArr[++selectorIndex]);
     if (!isMatchedParent) {
       return false;
     }
@@ -71,7 +74,34 @@ function recursionElement(element, selectorArr, selectorIndex) {
     ) {
       return isMatchedParent;
     }
-    return recursionElement(element.parentNode, selectorArr, ++selectorIndex);
+    return recursionElement(
+      element,
+      element.parentNode,
+      selectorArr,
+      ++selectorIndex,
+    );
+  }
+
+  if (selectorArr[selectorIndex] === '+') {
+    const isMatchedAdjacent = matchElement(
+      prevElement.previousElementSibling,
+      selectorArr[++selectorIndex],
+    );
+    if (!isMatchedAdjacent) {
+      return false;
+    }
+    if (
+      element.parentNode.nodeName === '#document' ||
+      selectorIndex === selectorArr.length - 1
+    ) {
+      return isMatchedAdjacent;
+    }
+    return recursionElement(
+      element,
+      element.parentNode,
+      selectorArr,
+      ++selectorIndex,
+    );
   }
 
   const isMatched = matchElement(element, selectorArr[selectorIndex]);
@@ -95,15 +125,27 @@ function recursionElement(element, selectorArr, selectorIndex) {
     if (selectorIndex === selectorArr.length - 1) {
       return isMatched;
     }
-    return recursionElement(element.parentNode, selectorArr, ++selectorIndex);
+    return recursionElement(
+      element,
+      element.parentNode,
+      selectorArr,
+      ++selectorIndex,
+    );
   }
-  return recursionElement(element.parentNode, selectorArr, selectorIndex);
+  return recursionElement(
+    element,
+    element.parentNode,
+    selectorArr,
+    selectorIndex,
+  );
 }
 
+// 选择器匹配
 function match(selector, element, realResult) {
   // 将选择器拆分
   const selectorArr = selector.split(' ').reverse();
-  const result = recursionElement(element, selectorArr, 0);
+  const result = recursionElement(null, element, selectorArr, 0);
+  // realResult仅用来校验匹配结果
   console.log(
     realResult === result ? '测试OK' : '测试Fail',
     selector,
@@ -114,63 +156,72 @@ function match(selector, element, realResult) {
   return result;
 }
 
-console.log('\n简单选择器测试：');
-match('*', document.getElementById('id'), true);
-match('#id', document.getElementById('id'), true);
-match('.class', document.getElementById('id'), true);
-match('[data-test]', document.getElementById('id'), true);
-match('[data-test="testValue"]', document.getElementById('id'), true);
+// console.log('\n简单选择器测试：');
+// match('*', document.getElementById('id'), true);
+// match('#id', document.getElementById('id'), true);
+// match('.class', document.getElementById('id'), true);
+// match('[data-test]', document.getElementById('id'), true);
+// match('[data-test="testValue"]', document.getElementById('id'), true);
 
-console.log('\n复合选择器测试：');
+// console.log('\n复合选择器测试：');
+// match(
+//   'div#id.class[data-test="testValue"]',
+//   document.getElementById('id'),
+//   true,
+// );
+
+// console.log('\n复杂选择器之后代选择器测试：');
+// match('div *', document.getElementById('id'), true);
+// match('body * #id.class', document.getElementById('id'), true);
+// match('div #id.class', document.getElementById('id'), true);
+// match('body div #id.class', document.getElementById('id'), true);
+// match('body #id.class', document.getElementById('id'), true);
+// match('div div #id.class', document.getElementById('id'), false);
+// match('div #id.class[data-test]', document.getElementById('id'), true);
+// match('body div #id.class[data-test]', document.getElementById('id'), true);
+// match('div div #id.class[data-test]', document.getElementById('id'), false);
+// match(
+//   'div #id.class[data-test="testValue"]',
+//   document.getElementById('id'),
+//   true,
+// );
+// match(
+//   'div div#id.class[data-test="testValue"]',
+//   document.getElementById('id'),
+//   true,
+// );
+// match(
+//   'body div #id.class[data-test="testValue"]',
+//   document.getElementById('id'),
+//   true,
+// );
+// match(
+//   'div div #id.class[data-test="testValue"]',
+//   document.getElementById('id'),
+//   false,
+// );
+
+// console.log('\n复杂选择器之子代选择器测试：');
+// match('body > div > #id.class', document.getElementById('id'), true);
+// match('body > #id.class', document.getElementById('id'), false);
+
+console.log('\n复杂选择器之相邻兄弟选择器测试：');
 match(
-  'div#id.class[data-test="testValue"]',
+  'body > #AdjacentSibling + #id.class',
   document.getElementById('id'),
   true,
 );
+match('body div + #id.class', document.getElementById('id'), false);
+match('body + #id.class', document.getElementById('id'), false);
 
-console.log('\n复杂选择器之后代选择器测试：');
-match('div *', document.getElementById('id'), true);
-match('body * #id.class', document.getElementById('id'), true);
-match('div #id.class', document.getElementById('id'), true);
-match('body div #id.class', document.getElementById('id'), true);
-match('body #id.class', document.getElementById('id'), true);
-match('div div #id.class', document.getElementById('id'), false);
-match('div #id.class[data-test]', document.getElementById('id'), true);
-match('body div #id.class[data-test]', document.getElementById('id'), true);
-match('div div #id.class[data-test]', document.getElementById('id'), false);
-match(
-  'div #id.class[data-test="testValue"]',
-  document.getElementById('id'),
-  true,
-);
-match(
-  'div div#id.class[data-test="testValue"]',
-  document.getElementById('id'),
-  true,
-);
-match(
-  'body div #id.class[data-test="testValue"]',
-  document.getElementById('id'),
-  true,
-);
-match(
-  'div div #id.class[data-test="testValue"]',
-  document.getElementById('id'),
-  false,
-);
-
-console.log('\n复杂选择器之后代选择器测试：');
-match('body > div > #id.class', document.getElementById('id'), true);
-match('body > #id.class', document.getElementById('id'), false);
-
-console.log('\n测试不同元素：');
-match('div #id.class', document.querySelector('.class1'), false);
-match('body div #id.class', document.querySelector('.class1'), false);
-match('div div #id.class', document.querySelector('.class1'), false);
-match('div #id.class[data-test]', document.querySelector('.class1'), false);
-match(
-  'body div #id.class[data-test]',
-  document.querySelector('.class1'),
-  false,
-);
-match('div div #id.class[data-test]', document.querySelector('.class1'), false);
+// console.log('\n测试不同元素：');
+// match('div #id.class', document.querySelector('.class1'), false);
+// match('body div #id.class', document.querySelector('.class1'), false);
+// match('div div #id.class', document.querySelector('.class1'), false);
+// match('div #id.class[data-test]', document.querySelector('.class1'), false);
+// match(
+//   'body div #id.class[data-test]',
+//   document.querySelector('.class1'),
+//   false,
+// );
+// match('div div #id.class[data-test]', document.querySelector('.class1'), false);
