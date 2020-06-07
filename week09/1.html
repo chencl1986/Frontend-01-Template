@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    @keyframes mykf1 {
+      from {
+        background: red;
+      }
+
+      to {
+        background: yellow;
+      }
+    }
+
+    @keyframes mykf2 {
+      0% {
+        top: 0;
+        transition: top ease;
+      }
+
+      50% {
+        top: 30px;
+        transition: top ease-in;
+      }
+
+      75% {
+        top: 10px;
+        transition: top ease-out;
+      }
+
+      100% {
+        top: 0;
+        transform: linear;
+      }
+    }
+
+    div {
+      position: fixed;
+      right: 0;
+      width: 50px;
+      height: 50px;
+    }
+
+    #id1 {
+      animation: myk1 5s infinite;
+    }
+
+    #id2 {
+      animation: myk2 5s infinite;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="id1"></div>
+  <div id="id2"></div>
+</body>
+
+</html>

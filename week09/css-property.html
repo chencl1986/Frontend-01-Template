@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const styles = getComputedStyle(document.body)
+    console.log(styles.length);
+    console.log(styles);
+    let realStyles = []
+
+    for (const style of styles) {
+      if (!style.match('webkit')) {
+        realStyles.push(style)
+      }
+    }
+
+    console.log(realStyles.join('\n'));
+    // console.log(realStyles.length);
+  </script>
+</body>
+
+</html>
