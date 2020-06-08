@@ -8,7 +8,20 @@ str += document
   .querySelector('#Syntax')
   .nextElementSibling.innerText.replace(/\n/g, ''); */
 
-if (document.querySelector('#Values')) {
+if (document.querySelector('#Usage_notes')) {
+  str += '\n\tValues\n';
+
+  Array.from(
+    document.querySelector('#Usage_notes').nextElementSibling.nextElementSibling
+      .children,
+  ).forEach((ele, index) => {
+    if (index % 2 === 1) {
+      str += `\n\t\t\t${ele.innerText.replace(/(\n)+/g, '\t')}\n`;
+    } else {
+      str += `\t\t${ele.innerText}`;
+    }
+  });
+} else if (document.querySelector('#Values')) {
   str += '\n\tValues\n';
   let isSwitchToNoteMode = 0;
 
