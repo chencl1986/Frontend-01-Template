@@ -10,14 +10,29 @@ str += document
 
 if (document.querySelector('#Values')) {
   str += '\n\tValues\n';
+  let isSwitchToNoteMode = 0;
 
   Array.from(
     document.querySelector('#Values').nextElementSibling.children,
   ).forEach((ele, index) => {
-    if (index % 2 === 1) {
-      str += `\n\t\t\t${ele.innerText.replace(/(\n)+/g, '\t')}\n`;
-    } else {
-      str += `\t\t${ele.innerText}`;
+    if (
+      ele.children &&
+      ele.children.length &&
+      ele.children[0].className === 'note'
+    ) {
+      isSwitchToNoteMode++;
+    }
+    const useIndex = isSwitchToNoteMode % 2 === 1 ? index + 1 : index;
+    if (
+      ele.children &&
+      ele.children.length &&
+      ele.children[0].className !== 'note'
+    ) {
+      if (useIndex % 2 === 1) {
+        str += `\n\t\t\t${ele.innerText.replace(/(\n)+/g, '\t')}\n`;
+      } else {
+        str += `\t\t${ele.innerText}`;
+      }
     }
   });
 } else {
