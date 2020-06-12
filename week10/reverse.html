@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="content">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+  </div>
+  <script>
+    const content = document.querySelector('#content')
+    let index = 0
+    while (index < content.length) {
+      const element = document.querySelector('#content').firstElementChild;
+      console.log(element);
+      document.querySelector('#content').appendChild(element)
+      index++
+    }
+  </script>
+</body>
+
+</html>

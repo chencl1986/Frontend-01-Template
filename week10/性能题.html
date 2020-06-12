@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>FE TEST</title>
+  <style>
+    #exam {
+      background: #fff;
+      position: fixed;
+      width: 50vw;
+      top: 1vh;
+      padding: 0 1vh 0;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 1);
+      opacity: 0.9
+    }
+
+    #box {
+      position: absolute;
+      box-sizing: border-box;
+      width: 80vw;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 1);
+      display: -webkit-flex;
+      /* Safari */
+      display: flex;
+      flex-wrap: wrap;
+      bottom: 1vh;
+    }
+  </style>
+</head>
+
+<body style="height:100000em;">
+  <div id="box"></div>
+  <div id="exam">
+    <h1>题目</h1>
+    <p>1、使box区域相对于整个页面（水平+垂直）居中，让每个rect颜色块实现按宽度从大到小进行排序且每行两端对齐</p>
+    <p>2、每个rect块上显示按宽度排序的序号，随着页面滚动实时更新</p>
+    <p>3、优化update函数，不改变dom结构的情况下实现同样的滚动刷新效果，解决卡顿问题（time cost小于50ms）,并说明卡顿的原因</p>
+
+  </div>
+  <script>
+    const box = document.querySelector('#box');
+    const minWidth = 8
+    const maxWidth = 32
+
+    Array(1000).fill(0).forEach(() => {
+      const div = document.createElement('div');
+      div.className = 'rect';
+      div.style.cssText = `
+      background:rgb(${Math.random() * 100 + 100 | 0}, ${Math.random() * 100 + 100 | 0}, ${Math.random() * 100 + 50 | 0});
+      width:${Math.random() * maxWidth}px;
+      height:2vh;
+      margin:0 0 0 0;
+    `;
+      box.appendChild(div);
+    });
+
+    function update(t) {
+      console.time('time cost');
+      document.querySelectorAll('.rect').forEach((n, i) => {
+        let width = n.offsetWidth * Math.random() * 2
+        width = width > maxWidth ? maxWidth : width
+        width = width < minWidth ? minWidth : width
+        n.style.width = `${width}px`;
+      })
+      console.timeEnd('time cost');
+    }
+
+    function onScroll(e) {
+      const t = window.scrollY;
+      box.style.cssText = `will-change:transform;transform:translate3d(0, ${t}px, 0)`;
+      update(t);
+    }
+
+    window.addEventListener('scroll', onScroll);
+  </script>
+</body>
+
+</html>
