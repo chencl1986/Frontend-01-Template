@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .row {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .col {
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      font-size: 30px;
+      color: #fff;
+      background: green;
+      border: 1px solid #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="pattern"></div>
+  <script>
+    let pattern = [
+      [2, 0, 0],
+      [0, 1, 0],
+      [0, 0, 0],
+    ]
+    console.log(pattern);
+
+    function show() {
+      let html = ''
+
+      pattern.forEach((row) => {
+        html += '<div class="row">'
+        row.forEach((col) => {
+          html += `<span class="col">${
+            col === 2 ? 'x'
+             : col === 1 ?
+              'o' :
+               ''
+          }</span>`
+        })
+        html += '</div>'
+      })
+      document.querySelector('#pattern').innerHTML = html
+    }
+    show()
+  </script>
+</body>
+
+</html>
