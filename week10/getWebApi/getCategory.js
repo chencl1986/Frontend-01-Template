@@ -13,12 +13,16 @@ var resolveStr = {
   Constructor: '',
   Methods: '',
   Events: '',
+  Pointer_event_types: '',
+  GlobalEventHandlers: '',
 };
 var attrs = {
   Properties: true,
   Constructor: true,
   Methods: true,
   Events: true,
+  Pointer_event_types: true,
+  GlobalEventHandlers: true,
 };
 
 while (index < wikiArticle.children.length) {
@@ -52,6 +56,40 @@ while (index < wikiArticle.children.length) {
   }
 
   if (tagName === 'dl') {
+    if (lastResolveAttr) {
+      Array.from(ele.children).forEach((child) => {
+        if (child.tagName.toLowerCase() === 'dt') {
+          if (child.children) {
+            Array.from(child.children).forEach((c, i) => {
+              if (!i) {
+                resolveStr[lastResolveAttr] += `\n\t\t\t${c.innerText}`;
+              } else {
+                if (c.innerText) {
+                  resolveStr[lastResolveAttr] += `\n\t\t\t\t${c.innerText}`;
+                }
+              }
+            });
+          } else {
+            resolveStr[lastResolveAttr] += `\n\t\t\t${child.innerText}`;
+          }
+        } else {
+          if (child.innerText.match('\n\n')) {
+            resolveStr[lastResolveAttr] += `\n\t\t\t\t${child.innerText.replace(
+              '\n\n',
+              '\n\t\t\t\t',
+            )}`;
+          } else if (child.innerText.match('\n')) {
+            resolveStr[lastResolveAttr] += `\n\t\t\t\t${child.innerText.replace(
+              '\n',
+              '\n\t\t\t\t',
+            )}`;
+          } else {
+            resolveStr[lastResolveAttr] += `\n\t\t\t\t${child.innerText}`;
+          }
+        }
+      });
+    }
+
     if (resolveAttr) {
       Array.from(ele.children).forEach((child) => {
         if (child.tagName.toLowerCase() === 'dt') {
@@ -87,40 +125,6 @@ while (index < wikiArticle.children.length) {
       lastResolveAttr = resolveAttr;
       resolveAttr = '';
     }
-
-    if (lastResolveAttr) {
-      Array.from(ele.children).forEach((child) => {
-        if (child.tagName.toLowerCase() === 'dt') {
-          if (child.children) {
-            Array.from(child.children).forEach((c, i) => {
-              if (!i) {
-                resolveStr[lastResolveAttr] += `\n\t\t\t${c.innerText}`;
-              } else {
-                if (c.innerText) {
-                  resolveStr[lastResolveAttr] += `\n\t\t\t\t${c.innerText}`;
-                }
-              }
-            });
-          } else {
-            resolveStr[lastResolveAttr] += `\n\t\t\t${child.innerText}`;
-          }
-        } else {
-          if (child.innerText.match('\n\n')) {
-            resolveStr[lastResolveAttr] += `\n\t\t\t\t${child.innerText.replace(
-              '\n\n',
-              '\n\t\t\t\t',
-            )}`;
-          } else if (child.innerText.match('\n')) {
-            resolveStr[lastResolveAttr] += `\n\t\t\t\t${child.innerText.replace(
-              '\n',
-              '\n\t\t\t\t',
-            )}`;
-          } else {
-            resolveStr[lastResolveAttr] += `\n\t\t\t\t${child.innerText}`;
-          }
-        }
-      });
-    }
   }
 
   index++;
@@ -130,6 +134,8 @@ treeStr += resolveStr.Constructor;
 treeStr += resolveStr.Properties;
 treeStr += resolveStr.Methods;
 treeStr += resolveStr.Events;
+treeStr += resolveStr.Pointer_event_types;
+treeStr += resolveStr.GlobalEventHandlers;
 
 treeStr += '\n\tSpecifications';
 
