@@ -1,3 +1,5 @@
+<div id="names"></div>
+<iframe src="" frameborder="0"></iframe>
 <script>
 let names = Object.getOwnPropertyNames(window);
 
@@ -91,8 +93,16 @@ names = filterOut(names, ["ReadableStream", "ReadableStreamDefaultReader", "Read
 
 names = filterOut(names, ["SyncManager"]);
 
-
+let links = ''
 console.log(names);
+console.log(names.forEach(name => {
+  console.log(name);
+  links += `<a href="https://developer.mozilla.org/en-US/docs/Web/API/${name}" target="_blank">${name}</a><br/>`;
+}));
+document.querySelector('#names').innerHTML = links;
+document.querySelector('a').addEventListener('click', function () {
+  
+})
 console.log(names.length);
 
 </script>
