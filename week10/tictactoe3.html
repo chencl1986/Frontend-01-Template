@@ -71,13 +71,83 @@
     }
 
     function move(x, y) {
+      pattern[y][x] = color
       if (pattern[y][x] !== 0) {
         return
       }
-      pattern[x][y] = color
+      if (check(pattern, color, x, y)) {
+        alert(`${color == 2 ? 'x' : 'o'} wins`)
+      }
       color = 3 - color
       show()
     }
+
+    function check(pattern, color, x, y) {
+      console.log(pattern, color, x, y); {
+        let win = true;
+        // 横向比较
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            if (pattern[i][j] !== color) {
+              win = false;
+              break;
+            }
+          }
+          console.log(win);
+          if (win) {
+            return true;
+          }
+        }
+      }
+
+      {
+        // 纵向比较
+        let win = true;
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            if (pattern[j][i] !== color) {
+              win = false;
+              break;
+            }
+          }
+          console.log(win);
+          if (win) {
+            return true;
+          }
+        }
+      }
+
+      {
+        // 左上到右下
+        let win = true;
+        for (let j = 0; j < 3; j++) {
+          if (pattern[j][j] !== color) {
+            win = false;
+            break;
+          }
+        }
+        console.log(win);
+        if (win) {
+          return true;
+        }
+      }
+
+      {
+        // 右上到左下
+        let win = true;
+        for (let j = 0; j < 3; j++) {
+          if (pattern[j][2 - j] !== color) {
+            win = false;
+            break;
+          }
+        }
+        console.log(win);
+        if (win) {
+          return true;
+        }
+      }
+    }
+
     show()
   </script>
 </body>
