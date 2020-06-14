@@ -4,8 +4,10 @@ var resolveStr = {
   Syntax: '',
   Properties: '',
   Constructor: '',
+  Constructors: '',
   Constants: '',
   Methods: '',
+  methods: '',
   Events: '',
   Pointer_event_types: '',
   GlobalEventHandlers: '',
@@ -35,8 +37,10 @@ var attrs = {
   Syntax: true,
   Properties: true,
   Constructor: true,
+  Constructors: true,
   Constants: true,
   Methods: true,
+  methods: true,
   Events: true,
   Pointer_event_types: true,
   GlobalEventHandlers: true,
@@ -231,9 +235,11 @@ buildResolveStr(wikiArticle);
 
 treeStr += resolveStr.Syntax;
 treeStr += resolveStr.Constructor;
+treeStr += resolveStr.Constructors;
 treeStr += resolveStr.Constants;
 treeStr += resolveStr.Properties;
 treeStr += resolveStr.Methods;
+treeStr += resolveStr.methods;
 treeStr += resolveStr.Events;
 treeStr += resolveStr.Pointer_event_types;
 treeStr += resolveStr.GlobalEventHandlers;
