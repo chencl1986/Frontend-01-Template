@@ -1,6 +1,4 @@
-var treeStr = `${
-  document.querySelector('.titlebar-container .title').innerText
-}\n\tDescription`;
+var treeStr = document.querySelector('.titlebar-container .title').innerText;
 var propertiesStr = '';
 var constructorStr = '';
 var wikiArticle = document.querySelector('#wikiArticle');
@@ -9,20 +7,30 @@ var resolveTitle = true;
 var resolveAttr = '';
 var lastResolveAttr = '';
 var resolveStr = {
+  Syntax: '',
   Properties: '',
   Constructor: '',
   Methods: '',
   Events: '',
   Pointer_event_types: '',
   GlobalEventHandlers: '',
+  Static_properties: '',
+  Static_methods: '',
+  Instance_properties: '',
+  Instance_methods: '',
 };
 var attrs = {
+  Syntax: true,
   Properties: true,
   Constructor: true,
   Methods: true,
   Events: true,
   Pointer_event_types: true,
   GlobalEventHandlers: true,
+  Static_properties: true,
+  Static_methods: true,
+  Instance_properties: true,
+  Instance_methods: true,
 };
 
 while (index < wikiArticle.children.length) {
@@ -31,7 +39,7 @@ while (index < wikiArticle.children.length) {
   const attr = ele.getAttribute('id');
 
   if (resolveTitle && tagName === 'p') {
-    treeStr += `\n\t\t${ele.innerText}`;
+    // treeStr += '\n\t\t' + ele.innerText;
   }
 
   if (tagName === 'h2') {
@@ -39,19 +47,22 @@ while (index < wikiArticle.children.length) {
       resolveTitle = false;
       resolveAttr = attr;
       lastResolveAttr = '';
-      resolveStr[attr] = `\n\t${ele.innerText}`;
+      resolveStr[attr] = '\n\t' + ele.innerText;
     }
   }
 
   if (tagName === 'h3') {
+    if (resolveAttr && resolveAttr === 'Syntax' && attr === 'Parameters') {
+      resolveStr[resolveAttr] = '\n\t\t' + ele.innerText
+    }
     if (lastResolveAttr) {
-      resolveStr[lastResolveAttr] += `\n\t\t${ele.innerText}`;
+      resolveStr[lastResolveAttr] += '\n\t\t' + ele.innerText;
     }
   }
 
   if (tagName === 'p') {
     if (lastResolveAttr) {
-      resolveStr[lastResolveAttr] += `\n\t\t\t${ele.innerText}`;
+      // resolveStr[lastResolveAttr] += '\n\t\t\t' + ele.innerText;
     }
   }
 
@@ -62,66 +73,85 @@ while (index < wikiArticle.children.length) {
           if (child.children) {
             Array.from(child.children).forEach((c, i) => {
               if (!i) {
-                resolveStr[lastResolveAttr] += `\n\t\t\t${c.innerText}`;
+                resolveStr[lastResolveAttr] += '\n\t\t\t' + ele.innerText;
               } else {
-                if (c.innerText) {
-                  resolveStr[lastResolveAttr] += `\n\t\t\t\t${c.innerText}`;
-                }
+                // if (c.innerText) {
+                //   resolveStr[lastResolveAttr] += '\n\t\t\t\t' + ele.innerText;
+                // }
               }
             });
           } else {
-            resolveStr[lastResolveAttr] += `\n\t\t\t${child.innerText}`;
+            resolveStr[lastResolveAttr] += '\n\t\t\t' + child.innerText;
           }
         } else {
-          if (child.innerText.match('\n\n')) {
-            resolveStr[lastResolveAttr] += `\n\t\t\t\t${child.innerText.replace(
-              '\n\n',
-              '\n\t\t\t\t',
-            )}`;
-          } else if (child.innerText.match('\n')) {
-            resolveStr[lastResolveAttr] += `\n\t\t\t\t${child.innerText.replace(
-              '\n',
-              '\n\t\t\t\t',
-            )}`;
-          } else {
-            resolveStr[lastResolveAttr] += `\n\t\t\t\t${child.innerText}`;
-          }
+          // if (child.innerText.match('\n\n')) {
+          //   resolveStr[lastResolveAttr] += '\n\t\t\t\t' + child.innerText.replace(
+          //     '\n\n',
+          //     '\n\t\t\t\t',
+          //   );
+          // } else if (child.innerText.match('\n')) {
+          //   resolveStr[lastResolveAttr] += '\n\t\t\t\t' + child.innerText.replace(
+          //     '\n',
+          //     '\n\t\t\t\t',
+          //   );
+          // } else {
+          //   resolveStr[lastResolveAttr] += '\n\t\t\t\t' + child.innerText;
+          // }
         }
       });
     }
 
     if (resolveAttr) {
-      Array.from(ele.children).forEach((child) => {
-        if (child.tagName.toLowerCase() === 'dt') {
-          if (child.children) {
-            Array.from(child.children).forEach((c, i) => {
-              if (!i) {
-                resolveStr[resolveAttr] += `\n\t\t${c.innerText}`;
-              } else {
-                if (c.innerText) {
-                  resolveStr[resolveAttr] += `\n\t\t\t${c.innerText}`;
+      if (resolveStr[resolveAttr].endsWith('Parameters')) {
+        Array.from(ele.children).forEach((child) => {
+          if (child.tagName.toLowerCase() === 'dt') {
+            if (child.children) {
+              Array.from(child.children).forEach((c, i) => {
+                if (!i) {
+                  resolveStr[resolveAttr] += '\n\t\t\t' + c.innerText;
+                } else {
+                  if (c.innerText) {
+                    // resolveStr[resolveAttr] += '\n\t\t\t' + c.innerText;
+                  }
                 }
-              }
-            });
-          } else {
-            resolveStr[resolveAttr] += `\n\t\t${child.innerText}`;
+              });
+            }
           }
-        } else {
-          if (child.innerText.match('\n\n')) {
-            resolveStr[resolveAttr] += `\n\t\t\t${child.innerText.replace(
-              '\n\n',
-              '\n\t\t\t',
-            )}`;
-          } else if (child.innerText.match('\n')) {
-            resolveStr[resolveAttr] += `\n\t\t\t${child.innerText.replace(
-              '\n',
-              '\n\t\t\t',
-            )}`;
+        });
+        resolveAttr = '';
+      } else {
+        Array.from(ele.children).forEach((child) => {
+          if (child.tagName.toLowerCase() === 'dt') {
+            if (child.children) {
+              Array.from(child.children).forEach((c, i) => {
+                if (!i) {
+                  resolveStr[resolveAttr] += '\n\t\t' + c.innerText;
+                } else {
+                  if (c.innerText) {
+                    // resolveStr[resolveAttr] += '\n\t\t\t' + c.innerText;
+                  }
+                }
+              });
+            } else {
+              // resolveStr[resolveAttr] += '\n\t\t' + child.innerText;
+            }
           } else {
-            resolveStr[resolveAttr] += `\n\t\t\t${child.innerText}`;
+            // if (child.innerText.match('\n\n')) {
+            //   resolveStr[resolveAttr] += '\n\t\t\t' + child.innerText.replace(
+            //     '\n\n',
+            //     '\n\t\t\t',
+            //   );
+            // } else if (child.innerText.match('\n')) {
+            //   resolveStr[resolveAttr] += '\n\t\t\t' + child.innerText.replace(
+            //     '\n',
+            //     '\n\t\t\t',
+            //   );
+            // } else {
+            //   resolveStr[resolveAttr] += '\n\t\t\t' + child.innerText;
+            // }
           }
-        }
-      });
+        });
+      }
       lastResolveAttr = resolveAttr;
       resolveAttr = '';
     }
@@ -130,37 +160,47 @@ while (index < wikiArticle.children.length) {
   index++;
 }
 
+treeStr += resolveStr.Syntax;
 treeStr += resolveStr.Constructor;
 treeStr += resolveStr.Properties;
 treeStr += resolveStr.Methods;
 treeStr += resolveStr.Events;
 treeStr += resolveStr.Pointer_event_types;
 treeStr += resolveStr.GlobalEventHandlers;
+treeStr += resolveStr.Static_properties;
+treeStr += resolveStr.Static_methods;
+treeStr += resolveStr.Instance_properties;
+treeStr += resolveStr.Instance_methods;
 
 treeStr += '\n\tSpecifications';
 
-Array.from(
-  (
-    document.querySelector('#Specifications') ||
-    document.querySelector('#Specification')
-  ).nextElementSibling.querySelectorAll('tbody tr'),
-).forEach((ele, index) => {
-  Array.from(ele.children).forEach((ele, index) => {
-    if (index === 0) {
-      if (ele.innerText !== 'Specification') {
-        treeStr += `\n\t\t${ele.innerText.replace('\n', '\n\t\t\t')}`;
+if (
+  document.querySelector('#Specifications') ||
+  document.querySelector('#Specification')
+) {
+  Array.from(
+    (
+      document.querySelector('#Specifications') ||
+      document.querySelector('#Specification')
+    ).nextElementSibling.querySelectorAll('tbody tr'),
+  ).forEach((ele, index) => {
+    Array.from(ele.children).forEach((ele, index) => {
+      if (index === 0) {
+        if (ele.innerText !== 'Specification') {
+          treeStr += '\n\t\t' + ele.innerText.replace('\n', '\n\t\t\t');
+        }
+      } else if (index === 1) {
+        if (ele.innerText !== 'Status') {
+          // treeStr += '\n\t\t\t\t' + ele.innerText.replace('\n', '\t');
+        }
+      } else {
+        if (ele.innerText !== 'Comment') {
+          // treeStr += \n\t\t\t\t\t + ele.innerText.replace(/\n/g, '\t');
+        }
       }
-    } else if (index === 1) {
-      if (ele.innerText !== 'Status') {
-        treeStr += `\n\t\t\t\t${ele.innerText.replace('\n', '\t')}`;
-      }
-    } else {
-      if (ele.innerText !== 'Comment') {
-        treeStr += `\n\t\t\t\t\t${ele.innerText.replace(/\n/g, '\t')}`;
-      }
-    }
+    });
   });
-});
+}
 
 console.log(treeStr);
 copy(treeStr);
