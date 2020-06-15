@@ -88,7 +88,7 @@ function buildResolveStr(wikiArticle) {
     }
 
     if (resolveTitle && tagName === 'p') {
-      // treeStr += '\n\t\t' + ele.innerText;
+      // treeStr += '\\n\\t\\t' + ele.innerText;
     }
 
     if (tagName === 'h2') {
@@ -96,7 +96,7 @@ function buildResolveStr(wikiArticle) {
         resolveTitle = false;
         resolveAttr = attr;
         lastResolveAttr = '';
-        resolveStr[attr] = '\n\t' + ele.innerText;
+        resolveStr[attr] = '\\n\\t' + ele.innerText;
       } else {
         resolveAttr = '';
         lastResolveAttr = '';
@@ -105,20 +105,20 @@ function buildResolveStr(wikiArticle) {
 
     if (tagName === 'h3') {
       if (resolveAttr && resolveAttr === 'Syntax' && attr === 'Parameters') {
-        resolveStr[resolveAttr] += '\n\t\t' + ele.innerText;
+        resolveStr[resolveAttr] += '\\n\\t\\t' + ele.innerText;
       }
       console.log(lastResolveAttr);
       if (lastResolveAttr) {
-        resolveStr[lastResolveAttr] += '\n\t\t' + ele.innerText;
+        resolveStr[lastResolveAttr] += '\\n\\t\\t' + ele.innerText;
       }
       if (resolveAttr === 'Constants') {
-        resolveStr[resolveAttr] += '\n\t\t' + ele.innerText;
+        resolveStr[resolveAttr] += '\\n\\t\\t' + ele.innerText;
       }
     }
 
     if (tagName === 'p') {
       if (lastResolveAttr) {
-        // resolveStr[lastResolveAttr] += '\n\t\t\t' + ele.innerText;
+        // resolveStr[lastResolveAttr] += '\\n\\t\\t\\t' + ele.innerText;
       }
     }
 
@@ -128,7 +128,7 @@ function buildResolveStr(wikiArticle) {
           if (child.tagName.toLowerCase() === 'tbody') {
             Array.from(child.children).forEach((tr, i) => {
               if (i) {
-                resolveStr[resolveAttr] += '\n\t\t' + tr.children[0].innerText;
+                resolveStr[resolveAttr] += '\\n\\t\\t' + tr.children[0].innerText;
               }
             });
           }
@@ -143,29 +143,29 @@ function buildResolveStr(wikiArticle) {
             if (child.children) {
               Array.from(child.children).forEach((c, i) => {
                 if (!i) {
-                  resolveStr[lastResolveAttr] += '\n\t\t\t' + c.innerText;
+                  resolveStr[lastResolveAttr] += '\\n\\t\\t\\t' + c.innerText;
                 } else {
                   // if (c.innerText) {
-                  //   resolveStr[lastResolveAttr] += '\n\t\t\t\t' + ele.innerText;
+                  //   resolveStr[lastResolveAttr] += '\\n\\t\\t\\t\\t' + ele.innerText;
                   // }
                 }
               });
             } else {
-              resolveStr[lastResolveAttr] += '\n\t\t\t' + child.innerText;
+              resolveStr[lastResolveAttr] += '\\n\\t\\t\\t' + child.innerText;
             }
           } else {
-            // if (child.innerText.match('\n\n')) {
-            //   resolveStr[lastResolveAttr] += '\n\t\t\t\t' + child.innerText.replace(
-            //     '\n\n',
-            //     '\n\t\t\t\t',
+            // if (child.innerText.match('\\n\\n')) {
+            //   resolveStr[lastResolveAttr] += '\\n\\t\\t\\t\\t' + child.innerText.replace(
+            //     '\\n\\n',
+            //     '\\n\\t\\t\\t\\t',
             //   );
-            // } else if (child.innerText.match('\n')) {
-            //   resolveStr[lastResolveAttr] += '\n\t\t\t\t' + child.innerText.replace(
-            //     '\n',
-            //     '\n\t\t\t\t',
+            // } else if (child.innerText.match('\\n')) {
+            //   resolveStr[lastResolveAttr] += '\\n\\t\\t\\t\\t' + child.innerText.replace(
+            //     '\\n',
+            //     '\\n\\t\\t\\t\\t',
             //   );
             // } else {
-            //   resolveStr[lastResolveAttr] += '\n\t\t\t\t' + child.innerText;
+            //   resolveStr[lastResolveAttr] += '\\n\\t\\t\\t\\t' + child.innerText;
             // }
           }
         });
@@ -178,10 +178,10 @@ function buildResolveStr(wikiArticle) {
               if (child.children) {
                 Array.from(child.children).forEach((c, i) => {
                   if (!i) {
-                    resolveStr[resolveAttr] += '\n\t\t\t' + c.innerText;
+                    resolveStr[resolveAttr] += '\\n\\t\\t\\t' + c.innerText;
                   } else {
                     if (c.innerText) {
-                      // resolveStr[resolveAttr] += '\n\t\t\t' + c.innerText;
+                      // resolveStr[resolveAttr] += '\\n\\t\\t\\t' + c.innerText;
                     }
                   }
                 });
@@ -195,29 +195,29 @@ function buildResolveStr(wikiArticle) {
               if (child.children) {
                 Array.from(child.children).forEach((c, i) => {
                   if (!i) {
-                    resolveStr[resolveAttr] += '\n\t\t' + c.innerText;
+                    resolveStr[resolveAttr] += '\\n\\t\\t' + c.innerText;
                   } else {
                     if (c.innerText) {
-                      // resolveStr[resolveAttr] += '\n\t\t\t' + c.innerText;
+                      // resolveStr[resolveAttr] += '\\n\\t\\t\\t' + c.innerText;
                     }
                   }
                 });
               } else {
-                // resolveStr[resolveAttr] += '\n\t\t' + child.innerText;
+                // resolveStr[resolveAttr] += '\\n\\t\\t' + child.innerText;
               }
             } else {
-              // if (child.innerText.match('\n\n')) {
-              //   resolveStr[resolveAttr] += '\n\t\t\t' + child.innerText.replace(
-              //     '\n\n',
-              //     '\n\t\t\t',
+              // if (child.innerText.match('\\n\\n')) {
+              //   resolveStr[resolveAttr] += '\\n\\t\\t\\t' + child.innerText.replace(
+              //     '\\n\\n',
+              //     '\\n\\t\\t\\t',
               //   );
-              // } else if (child.innerText.match('\n')) {
-              //   resolveStr[resolveAttr] += '\n\t\t\t' + child.innerText.replace(
-              //     '\n',
-              //     '\n\t\t\t',
+              // } else if (child.innerText.match('\\n')) {
+              //   resolveStr[resolveAttr] += '\\n\\t\\t\\t' + child.innerText.replace(
+              //     '\\n',
+              //     '\\n\\t\\t\\t',
               //   );
               // } else {
-              //   resolveStr[resolveAttr] += '\n\t\t\t' + child.innerText;
+              //   resolveStr[resolveAttr] += '\\n\\t\\t\\t' + child.innerText;
               // }
             }
           });
@@ -265,7 +265,7 @@ treeStr += resolveStr.Transform_feedback;
 treeStr += resolveStr.Uniform_buffer_objects;
 treeStr += resolveStr.Vertex_array_objects;
 
-treeStr += '\n\tSpecifications';
+treeStr += '\\n\\tSpecifications';
 
 if (
   document.querySelector('#Specifications') ||
@@ -280,15 +280,15 @@ if (
     Array.from(ele.children).forEach((ele, index) => {
       if (index === 0) {
         if (ele.innerText !== 'Specification') {
-          treeStr += '\n\t\t' + ele.innerText.replace('\n', '\n\t\t\t');
+          treeStr += '\\n\\t\\t' + ele.innerText.replace('\\n', '\\n\\t\\t\\t');
         }
       } else if (index === 1) {
         if (ele.innerText !== 'Status') {
-          // treeStr += '\n\t\t\t\t' + ele.innerText.replace('\n', '\t');
+          // treeStr += '\\n\\t\\t\\t\\t' + ele.innerText.replace('\\n', '\\t');
         }
       } else {
         if (ele.innerText !== 'Comment') {
-          // treeStr += \n\t\t\t\t\t + ele.innerText.replace(/\n/g, '\t');
+          // treeStr += \\n\\t\\t\\t\\t\\t + ele.innerText.replace(/\\n/g, '\\t');
         }
       }
     });
