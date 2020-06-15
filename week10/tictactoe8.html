@@ -32,9 +32,9 @@
   <div id="pattern"></div>
   <script>
     let pattern = [
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
+      0, 2, 0,
+      0, 1, 0,
+      0, 0, 0,
     ]
     let color = 1
 
@@ -177,7 +177,22 @@
       // 使用循环判断
     }
 
+    let openings = new Map()
+
+    openings.set([
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+    ].toString() + '1', {
+      point: [1, 1],
+      result: 0
+    })
+
     function bestChoice(pattern, color) {
+      if (openings.has(pattern.toString() + color)) {
+        return openings.get(pattern.toString() + color)
+      }
+
       let point = willWin(pattern, color)
 
       if (point) {
@@ -211,7 +226,7 @@
         }
       }
 
-      // 将棋盘填满之后，如果没有找到可以走的点，即为平局
+      // 如果已经出现赢的结果，则停止循环，进行win-lose剪枝
       return {
         point,
         result: point ? result : 0 // -1输，0平，1赢

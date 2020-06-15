@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <style>
     #pattern {
@@ -32,11 +32,11 @@
   <div id="pattern"></div>
   <script>
     let pattern = [
-      [2, 0, 0],
+      [1, 2, 0],
       [0, 1, 0],
       [0, 0, 0],
-    ]
-    let color = 1
+    ];
+    let color = 2;
 
     function show() {
       /*  let html = ''
@@ -51,17 +51,17 @@
           }</span>`
         })
       }) */
-      let board = document.getElementById('pattern')
-      board.innerHTML = ''
+      let board = document.getElementById('pattern');
+      board.innerHTML = '';
 
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
-          let cell = document.createElement('div')
-          cell.classList.add('cell')
-          cell.innerText = pattern[j][i] == 2 ? 'x' :
-            pattern[j][i] === 1 ? 'o' : ''
-          cell.addEventListener('click', () => move(j, i))
-          board.appendChild(cell)
+          let cell = document.createElement('div');
+          cell.classList.add('cell');
+          cell.innerText =
+            pattern[i][j] == 2 ? 'x' : pattern[i][j] === 1 ? 'o' : '';
+          cell.addEventListener('click', () => move(j, i));
+          board.appendChild(cell);
         }
       }
       /* document.querySelector('#pattern').innerHTML = html
@@ -71,47 +71,50 @@
     }
 
     function move(x, y) {
-      pattern[x][y] = color
       if (pattern[y][x] !== 0) {
-        return
+        return;
       }
+      pattern[y][x] = color;
       if (check(pattern, color, x, y)) {
-        alert(`${color == 2 ? 'x' : 'o'} win`)
+        alert(`${color == 2 ? 'x' : 'o'} win`);
       }
-      color = 3 - color
-      show()
+      color = 3 - color;
+      show();
       if (willWin(pattern, color)) {
         alert(`${color == 2 ? 'x' : 'o'} will win`);
       }
     }
 
     function check(pattern, color, x, y) {
-      console.log(pattern, color, x, y);
-      // 横向比较
-      for (let i = 0; i < 3; i++) {
-        let win = true;
-        for (let j = 0; j < 3; j++) {
-          if (pattern[i][j] !== color) {
-            win = false;
-            break;
+      {
+        // 横向比较
+        for (let i = 0; i < 3; i++) {
+          let win = true;
+          for (let j = 0; j < 3; j++) {
+            if (pattern[i][j] !== color) {
+              win = false;
+              break;
+            }
           }
-        }
-        if (win) {
-          return true;
+          if (win) {
+            return true;
+          }
         }
       }
 
-      // 纵向比较
-      for (let i = 0; i < 3; i++) {
-        let win = true;
-        for (let j = 0; j < 3; j++) {
-          if (pattern[j][i] !== color) {
-            win = false;
-            break;
+      {
+        // 纵向比较
+        for (let i = 0; i < 3; i++) {
+          let win = true;
+          for (let j = 0; j < 3; j++) {
+            if (pattern[j][i] !== color) {
+              win = false;
+              break;
+            }
           }
-        }
-        if (win) {
-          return true;
+          if (win) {
+            return true;
+          }
         }
       }
 
@@ -142,28 +145,32 @@
           return true;
         }
       }
+
+      return false;
     }
 
     function clone(pattern) {
-      return JSON.parse(JSON.stringify(pattern))
+      return JSON.parse(JSON.stringify(pattern));
     }
 
     function willWin(pattern, color) {
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (pattern[i][j] !== 0) {
-            continue
+            continue;
           }
-          let tmp = clone(pattern)
-          tmp[i][j] = color
+          let tmp = clone(pattern);
+          tmp[i][j] = color;
           if (check(tmp, color)) {
-            return true
+            return true;
           }
         }
       }
+
+      return false;
     }
 
-    show()
+    show();
   </script>
 </body>
 

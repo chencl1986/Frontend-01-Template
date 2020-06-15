@@ -58,8 +58,8 @@
         for (let j = 0; j < 3; j++) {
           let cell = document.createElement('div')
           cell.classList.add('cell')
-          cell.innerText = pattern[j][i] == 2 ? 'x' :
-            pattern[j][i] === 1 ? 'o' : ''
+          cell.innerText = pattern[i][j] == 2 ? 'x' :
+            pattern[i][j] === 1 ? 'o' : ''
           cell.addEventListener('click', () => move(j, i))
           board.appendChild(cell)
         }
@@ -71,10 +71,10 @@
     }
 
     function move(x, y) {
-      pattern[y][x] = color
       if (pattern[y][x] !== 0) {
         return
       }
+      pattern[y][x] = color
       if (check(pattern, color, x, y)) {
         alert(`${color == 2 ? 'x' : 'o'} wins`)
       }
@@ -83,17 +83,16 @@
     }
 
     function check(pattern, color, x, y) {
-      console.log(pattern, color, x, y); {
-        let win = true;
+      {
         // 横向比较
         for (let i = 0; i < 3; i++) {
+          let win = true;
           for (let j = 0; j < 3; j++) {
             if (pattern[i][j] !== color) {
               win = false;
               break;
             }
           }
-          console.log(win);
           if (win) {
             return true;
           }
@@ -102,15 +101,14 @@
 
       {
         // 纵向比较
-        let win = true;
         for (let i = 0; i < 3; i++) {
+          let win = true;
           for (let j = 0; j < 3; j++) {
             if (pattern[j][i] !== color) {
               win = false;
               break;
             }
           }
-          console.log(win);
           if (win) {
             return true;
           }
@@ -126,7 +124,6 @@
             break;
           }
         }
-        console.log(win);
         if (win) {
           return true;
         }
@@ -141,11 +138,12 @@
             break;
           }
         }
-        console.log(win);
         if (win) {
           return true;
         }
       }
+
+      return false
     }
 
     show()

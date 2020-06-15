@@ -32,9 +32,9 @@
   <div id="pattern"></div>
   <script>
     let pattern = [
-      0, 2, 0,
-      0, 1, 0,
-      0, 0, 0,
+      [0, 2, 0],
+      [0, 1, 0],
+      [0, 0, 0],
     ]
     let color = 1
 
@@ -71,10 +71,10 @@
     }
 
     function move(x, y) {
-      pattern[x][y] = color
       if (pattern[y][x] !== 0) {
         return
       }
+      pattern[y][x] = color
       if (check(pattern, color, x, y)) {
         alert(`${color == 2 ? 'x' : 'o'} win`)
       }
@@ -86,32 +86,35 @@
     }
 
     function check(pattern, color, x, y) {
-      console.log(pattern, color, x, y);
-      // 横向比较
-      for (let i = 0; i < 3; i++) {
-        let win = true;
-        for (let j = 0; j < 3; j++) {
-          if (pattern[i][j] !== color) {
-            win = false;
-            break;
+      {
+        // 横向比较
+        for (let i = 0; i < 3; i++) {
+          let win = true;
+          for (let j = 0; j < 3; j++) {
+            if (pattern[i][j] !== color) {
+              win = false;
+              break;
+            }
           }
-        }
-        if (win) {
-          return true;
+          if (win) {
+            return true;
+          }
         }
       }
 
-      // 纵向比较
-      for (let i = 0; i < 3; i++) {
-        let win = true;
-        for (let j = 0; j < 3; j++) {
-          if (pattern[j][i] !== color) {
-            win = false;
-            break;
+      {
+        // 纵向比较
+        for (let i = 0; i < 3; i++) {
+          let win = true;
+          for (let j = 0; j < 3; j++) {
+            if (pattern[j][i] !== color) {
+              win = false;
+              break;
+            }
           }
-        }
-        if (win) {
-          return true;
+          if (win) {
+            return true;
+          }
         }
       }
 
@@ -142,6 +145,8 @@
           return true;
         }
       }
+
+      return false
     }
 
     function clone(pattern) {
@@ -163,6 +168,13 @@
       }
 
       return null
+    }
+
+    function willLose(pattern, color) {
+      if (willWin(pattern, color)) {
+        return false
+      }
+      // 使用循环判断
     }
 
     let openings = new Map()
@@ -199,17 +211,21 @@
           }
           let tmp = clone(pattern)
           tmp[i][j] = color
+          // 看对方的bestChoice
           let opp = bestChoice(tmp, 3 - color)
           if (-opp.result >= result) {
+            // j其实对应x，i对应y
             point = [j, i]
             result = -opp.result
           }
+          // 如果已经出现赢的结果，则停止循环，进行win-lose剪枝
           if (result === 1) {
             break outer;
           }
         }
       }
 
+      // 将棋盘填满之后，如果没有找到可以走的点，即为平局
       return {
         point,
         result: point ? result : 0 // -1输，0平，1赢
