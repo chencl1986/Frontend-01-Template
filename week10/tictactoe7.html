@@ -32,8 +32,8 @@
   <div id="pattern"></div>
   <script>
     let pattern = [
-      [0, 2, 0],
-      [0, 1, 0],
+      [0, 0, 0],
+      [0, 0, 0],
       [0, 0, 0],
     ]
     let color = 1
@@ -60,7 +60,7 @@
           cell.classList.add('cell')
           cell.innerText = pattern[i][j] == 2 ? 'x' :
             pattern[i][j] === 1 ? 'o' : ''
-          cell.addEventListener('click', () => move(j, i))
+          cell.addEventListener('click', () => userMove(j, i))
           board.appendChild(cell)
         }
       }
@@ -70,7 +70,7 @@
       }) */
     }
 
-    function move(x, y) {
+    function userMove(x, y) {
       if (pattern[y][x] !== 0) {
         return
       }
@@ -80,9 +80,23 @@
       }
       color = 3 - color
       show()
-      if (willWin(pattern, color)) {
+      computerMove()
+      /* if (willWin(pattern, color)) {
         alert(`${color == 2 ? 'x' : 'o'} will win`);
+      } */
+    }
+
+    function computerMove() {
+      let choice = bestChoice(pattern, color)
+
+      if (choice.point) {
+        pattern[choice.point[1]][choice.point[0]] = color
       }
+      if (check(pattern, color)) {
+        alert(`${color == 2 ? 'x' : 'o'} win`)
+      }
+      color = 3 - color
+      show()
     }
 
     function check(pattern, color, x, y) {
@@ -177,18 +191,35 @@
       // 使用循环判断
     }
 
+    // 设置初始棋谱
     let openings = new Map()
 
-    openings.set([
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-    ].toString() + '1', {
-      point: [1, 1],
-      result: 0
-    })
+    openings.set(
+      [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+      ].toString() + '1',
+      // 第一步必然走中间点
+      {
+        point: [1, 1],
+        result: 0
+      }
+    )
+
+    openings.set(
+      [
+        [0, 0, 0],
+        [0, 1, 0],
+        [0, 0, 0],
+      ].toString() + '2', {
+        point: [0, 0],
+        result: 0
+      }
+    )
 
     function bestChoice(pattern, color) {
+      // 如果当前已有棋谱，则按照已设置的棋谱走棋
       if (openings.has(pattern.toString() + color)) {
         return openings.get(pattern.toString() + color)
       }
