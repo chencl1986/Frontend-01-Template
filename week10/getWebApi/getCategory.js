@@ -32,6 +32,8 @@ var resolveStr = {
   Transform_feedback: '',
   Uniform_buffer_objects: '',
   Vertex_array_objects: '',
+  Reference: '',
+  ['Non-standard_APIs']: '',
 };
 var attrs = {
   Syntax: true,
@@ -65,6 +67,8 @@ var attrs = {
   Transform_feedback: true,
   Uniform_buffer_objects: true,
   Vertex_array_objects: true,
+  Reference: true,
+  ['Non-standard_APIs']: true,
 };
 
 function buildResolveStr(wikiArticle) {
@@ -128,7 +132,8 @@ function buildResolveStr(wikiArticle) {
           if (child.tagName.toLowerCase() === 'tbody') {
             Array.from(child.children).forEach((tr, i) => {
               if (i) {
-                resolveStr[resolveAttr] += '\\n\\t\\t' + tr.children[0].innerText;
+                resolveStr[resolveAttr] +=
+                  '\\n\\t\\t' + tr.children[0].innerText;
               }
             });
           }
@@ -142,12 +147,17 @@ function buildResolveStr(wikiArticle) {
           if (child.tagName.toLowerCase() === 'dt') {
             if (child.children) {
               Array.from(child.children).forEach((c, i) => {
-                if (!i) {
-                  resolveStr[lastResolveAttr] += '\\n\\t\\t\\t' + c.innerText;
+                if (
+                  !i &&
+                  (!c.getAttribute('class') ||
+                    (c.getAttribute('class') &&
+                      !c.getAttribute('class').match('icon')))
+                ) {
+                  resolveStr[resolveAttr] += '\\n\\t\\t\\t' + c.innerText;
                 } else {
-                  // if (c.innerText) {
-                  //   resolveStr[lastResolveAttr] += '\\n\\t\\t\\t\\t' + ele.innerText;
-                  // }
+                  if (c.innerText && c.tagName.toLowerCase() === 'code') {
+                    resolveStr[resolveAttr] += '\\n\\t\\t\\t' + c.innerText;
+                  }
                 }
               });
             } else {
@@ -177,11 +187,16 @@ function buildResolveStr(wikiArticle) {
             if (child.tagName.toLowerCase() === 'dt') {
               if (child.children) {
                 Array.from(child.children).forEach((c, i) => {
-                  if (!i) {
+                  if (
+                    !i &&
+                    (!c.getAttribute('class') ||
+                      (c.getAttribute('class') &&
+                        !c.getAttribute('class').match('icon')))
+                  ) {
                     resolveStr[resolveAttr] += '\\n\\t\\t\\t' + c.innerText;
                   } else {
-                    if (c.innerText) {
-                      // resolveStr[resolveAttr] += '\\n\\t\\t\\t' + c.innerText;
+                    if (c.innerText && c.tagName.toLowerCase() === 'code') {
+                      resolveStr[resolveAttr] += '\\n\\t\\t\\t' + c.innerText;
                     }
                   }
                 });
@@ -194,11 +209,16 @@ function buildResolveStr(wikiArticle) {
             if (child.tagName.toLowerCase() === 'dt') {
               if (child.children) {
                 Array.from(child.children).forEach((c, i) => {
-                  if (!i) {
+                  if (
+                    !i &&
+                    (!c.getAttribute('class') ||
+                      (c.getAttribute('class') &&
+                        !c.getAttribute('class').match('icon')))
+                  ) {
                     resolveStr[resolveAttr] += '\\n\\t\\t' + c.innerText;
                   } else {
-                    if (c.innerText) {
-                      // resolveStr[resolveAttr] += '\\n\\t\\t\\t' + c.innerText;
+                    if (c.innerText && c.tagName.toLowerCase() === 'code') {
+                      resolveStr[resolveAttr] += '\\n\\t\\t' + c.innerText;
                     }
                   }
                 });
@@ -264,6 +284,8 @@ treeStr += resolveStr.Sync_objects;
 treeStr += resolveStr.Transform_feedback;
 treeStr += resolveStr.Uniform_buffer_objects;
 treeStr += resolveStr.Vertex_array_objects;
+treeStr += resolveStr.Reference;
+treeStr += resolveStr['Non-standard_APIs'];
 
 treeStr += '\\n\\tSpecifications';
 
