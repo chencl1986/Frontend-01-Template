@@ -2,6 +2,7 @@ var treeStr = document.querySelector('.titlebar-container .title').innerText;
 var wikiArticle = document.querySelector('#wikiArticle');
 var resolveStr = {
   Syntax: '',
+  Property: '',
   Properties: '',
   Constructor: '',
   Constructors: '',
@@ -37,6 +38,7 @@ var resolveStr = {
 };
 var attrs = {
   Syntax: true,
+  Property: true,
   Properties: true,
   Constructor: true,
   Constructors: true,
@@ -257,6 +259,7 @@ treeStr += resolveStr.Syntax;
 treeStr += resolveStr.Constructor;
 treeStr += resolveStr.Constructors;
 treeStr += resolveStr.Constants;
+treeStr += resolveStr.Property;
 treeStr += resolveStr.Properties;
 treeStr += resolveStr.Methods;
 treeStr += resolveStr.methods;
