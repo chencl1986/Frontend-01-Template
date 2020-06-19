@@ -15,6 +15,7 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
+      background-color: black;
     }
 
     #red.active {
@@ -33,22 +34,36 @@
 
 <body>
   <div id="trafficLight">
-    <div id="red" class="active"></div>
-    <div id="yellow"></div>
     <div id="green"></div>
+    <div id="yellow"></div>
+    <div id="red"></div>
   </div>
   <script>
-    async function light(index, time) {
+    function light(index) {
+      const lights = document.querySelectorAll('#trafficLight div')
+      Array.from(lights).forEach((ele, i) => {
+        if (i === index) {
+          ele.setAttribute('class', 'active')
+        } else {
+          ele.setAttribute('class', '')
+        }
+      })
+    }
+
+    function green() {
+      light(0)
+    }
+
+    function yellow() {
+      light(1)
+    }
+
+    function red() {
+      light(2)
+    }
+    async function sleep(time) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          const lights = document.querySelectorAll('#trafficLight div')
-          Array.from(lights).forEach((ele, i) => {
-            if (i === index) {
-              ele.setAttribute('class', 'active')
-            } else {
-              ele.setAttribute('class', '')
-            }
-          })
           resolve()
         }, time);
       })
@@ -56,9 +71,12 @@
 
     void(async function(params) {
       while (true) {
-        await light(0, 10000)
-        await light(1, 2000)
-        await light(2, 5000)
+        green()
+        await sleep(1000)
+        yellow()
+        await sleep(200)
+        red()
+        await sleep(500)
       }
     })()
   </script>
