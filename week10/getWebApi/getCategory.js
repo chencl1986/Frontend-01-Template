@@ -224,7 +224,11 @@ function buildResolveStr(wikiArticle) {
                   ) {
                     resolveStr[resolveAttr] += '\\n\\t\\t' + c.innerText;
                   } else {
-                    if (c.innerText && c.tagName.toLowerCase() === 'code') {
+                    if (
+                      c.innerText &&
+                      (c.tagName.toLowerCase() === 'code' ||
+                        c.tagName.toLowerCase() === 'a')
+                    ) {
                       resolveStr[resolveAttr] += '\\n\\t\\t' + c.innerText;
                     }
                   }
