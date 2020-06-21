@@ -129,14 +129,19 @@ function buildResolveStr(wikiArticle) {
     }
 
     if (tagName === 'table') {
-      if (resolveAttr === 'Constants') {
+      if (
+        resolveAttr === 'Constants' ||
+        resolveAttr === 'Properties' ||
+        resolveAttr === 'Methods' ||
+        resolveAttr === 'Property' ||
+        resolveAttr === 'methods'
+      ) {
         Array.from(ele.children).forEach((child) => {
           if (child.tagName.toLowerCase() === 'tbody') {
             Array.from(child.children).forEach((tr, i) => {
-              if (i) {
-                resolveStr[resolveAttr] +=
-                  '\\n\\t\\t' + tr.children[0].innerText;
-              }
+              // if (i) {
+              resolveStr[resolveAttr] += '\\n\\t\\t' + tr.children[0].innerText;
+              // }
             });
           }
         });
