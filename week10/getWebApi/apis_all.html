@@ -106,7 +106,8 @@ function buildResolveStr(wikiArticle) {
       (tagName === 'div' || tagName === 'dl') &&
       !ele.getAttribute('id') &&
       ele.children.length &&
-      !ele.getAttribute('class')
+      (!ele.getAttribute('class') ||
+        ele.getAttribute('class') === 'ready-for-wider-review')
     ) {
       buildResolveStr(ele);
     }
@@ -131,7 +132,6 @@ function buildResolveStr(wikiArticle) {
       if (resolveAttr && resolveAttr === 'Syntax' && attr === 'Parameters') {
         resolveStr[resolveAttr] += '\\n\\t\\t' + ele.innerText;
       }
-      console.log(lastResolveAttr);
       if (lastResolveAttr) {
         resolveStr[lastResolveAttr] += '\\n\\t\\t' + ele.innerText;
       }
@@ -232,7 +232,7 @@ function buildResolveStr(wikiArticle) {
         } else {
           Array.from(ele.children).forEach((child) => {
             if (child.tagName.toLowerCase() === 'dt') {
-              if (child.children) {
+              if (child.children && child.children.length) {
                 Array.from(child.children).forEach((c, i) => {
                   if (
                     !i &&
@@ -248,7 +248,7 @@ function buildResolveStr(wikiArticle) {
                   }
                 });
               } else {
-                // resolveStr[resolveAttr] += '\\n\\t\\t' + child.innerText;
+                resolveStr[resolveAttr] += '\\n\\t\\t' + child.innerText;
               }
             } else {
               // if (child.innerText.match('\\n\\n')) {
