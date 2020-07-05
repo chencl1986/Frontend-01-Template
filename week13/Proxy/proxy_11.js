@@ -108,11 +108,9 @@ effect(() => {
 });
 
 let range = document.createRange();
-
-range.setStart(document.getElementById('text').childNodes[0], 7);
+range.setStart(document.getElementById('text').childNodes[0], 6);
 range.setEnd(document.getElementById('text').childNodes[0], 14);
-
-let data = reactive({text: 'world'});
+let data = reactive({text: 'World'});
 effect(() => {
   range.extractContents();
   range.insertNode(document.createTextNode(data.text));
