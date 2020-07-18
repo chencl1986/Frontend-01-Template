@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #el {
+      width: 100px;
+      height: 100px;
+      background-color: skyblue;
+    }
+
+    #el2 {
+      width: 100px;
+      height: 100px;
+      background-color: skyblue;
+      /* transition: transform linear 0.5s; */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="el"></div>
+  <div id="el2"></div>
+  <button id="pause-btn">pause</button>
+  <button id="resume-btn">resume</button>
+  <button id="el2-start-btn">el2-start</button>
+  <!-- <script type="module">
+    import {TimeLine} from './animation'
+    let tl = new TimeLine()
+  </script> -->
+  <script src="./cubicBezier.js"></script>
+  <script src="./animation.js"></script>
+</body>
+
+</html>

@@ -131,8 +131,8 @@ class Carousel {
     });
     let root = <div class={'carousel'}>{children}</div>;
 
-    // this.loop(root, children);
-    this.drag(root, children);
+    this.loop(root, children);
+    // this.drag(root, children);
 
     return root;
   }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #el {
+      width: 100px;
+      height: 100px;
+      background-color: skyblue;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="el"></div>
+  <script>
+    let el = document.getElementById('el')
+    el.style.transition = 'ease 10s'
+    // setTimeout(() => {
+    //   el.style.transform = 'translate(300px, 300px)'
+    // }, 10);
+    /* setTimeout(() => {
+      el.style.transition = 'none'
+    }, 1000); */
+
+    function start() {
+      el.style.transform = 'translate(300px, 300px)'
+    }
+
+    function stop() {
+      el.style.transition = 'none'
+      el.style.transform = getComputedStyle(el).transform
+    }
+  </script>
+</body>
+
+</html>
