@@ -1,4 +1,5 @@
 import {createElement, Wrapper, Text} from './createElement';
+import {TimeLine, Animation, linear, ease} from './animation';
 
 // 普通组件
 class Carousel {
@@ -21,7 +22,43 @@ class Carousel {
   }
 
   loop(root, children) {
+    let tl = new TimeLine();
     let position = 0;
+    for (let position = 0; position < children.length; position++) {
+      let nextPosition = (position + 1) % children.length;
+      tl.add(
+        new Animation(
+          position,
+          children[position].style,
+          'transform',
+          -100 * position,
+          -100 - 100 * position,
+          3000,
+          position * 3000,
+          ease,
+          (value, time) => {
+            return `translate(${value}%)`;
+          },
+        ),
+      );
+      tl.add(
+        new Animation(
+          nextPosition,
+          children[nextPosition].style,
+          'transform',
+          100 - 100 * nextPosition,
+          -100 * nextPosition,
+          3000,
+          position * 3000,
+          ease,
+          (value, time) => {
+            return `translate(${value}%)`;
+          },
+        ),
+      );
+    }
+    tl.start();
+    // setTimeout(() => tl.start(), 3000);
 
     let nextPic = () => {
       let nextPosition = (position + 1) % this.data.length;
@@ -51,7 +88,7 @@ class Carousel {
       setTimeout(nextPic, 3000);
     };
     // 暂停轮播，处理拖拽功能
-    setTimeout(nextPic, 3000);
+    // setTimeout(nextPic, 3000);
   }
 
   drag(root, children) {

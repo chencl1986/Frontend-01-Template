@@ -1,4 +1,6 @@
-class TimeLine {
+import {cubicBezier} from './cubicBezier';
+
+export class TimeLine {
   constructor() {
     this.animation = [];
     this.requestID = null;
@@ -19,18 +21,24 @@ class TimeLine {
           delay,
           timingFunction,
           addTime,
-          valueFromProgression,
         } = animation;
 
-        let progression = timingFunction((t - delay - addTime) / duration); // 0-1之间的数字
+        // 处理delay>0时，progression为负数导致delay未生效的问题
+        // 考虑到timingFunction可能存在一些处理，因此还是把v设置为0，再传入timingFunction处理
+        let time = (t - delay - addTime) / duration;
+        let progression = timingFunction(time < 0 ? 0 : time); // 0-1之间的数字
 
         if (t > duration + delay + addTime) {
           progression = 1;
           animation.finished = true;
         }
 
-        let value = valueFromProgression(progression);
-        object[property] = template(value);
+        // 如果time<0，说明还在delay中，不需要设置样式
+        // 如果animations中存在多个相同元素，如果真在delay中的动画被设置style的时候会覆盖正在运行的动画
+        if (time >= 0) {
+          let value = animation.valueFromProgression(progression);
+          object[property] = template(value, time);
+        }
       }
 
       if (animations.length) {
@@ -93,8 +101,9 @@ class TimeLine {
   }
 }
 
-class Animation {
+export class Animation {
   constructor(
+    element, // 传入一个element标识参数，主要用于调试。
     object,
     property,
     start,
@@ -104,6 +113,7 @@ class Animation {
     timingFunction,
     template,
   ) {
+    this.element = element;
     this.object = object;
     this.template = template;
     this.property = property;
@@ -114,13 +124,14 @@ class Animation {
     this.timingFunction = timingFunction;
   }
 
-  valueFromProgression = (progression) => {
+  valueFromProgression(progression) {
     return this.start + progression * (this.end - this.start);
-  };
+  }
 }
 
-class ColorAnimation {
+export class ColorAnimation {
   constructor(
+    element,
     object,
     property,
     start,
@@ -130,6 +141,7 @@ class ColorAnimation {
     timingFunction,
     template,
   ) {
+    this.element = element;
     this.object = object;
     this.template =
       template ||
@@ -144,88 +156,16 @@ class ColorAnimation {
     this.timingFunction = timingFunction;
   }
 
-  valueFromProgression = (progression) => {
+  valueFromProgression(progression) {
     return {
       r: this.start.r + progression * (this.end.r - this.start.r),
       g: this.start.g + progression * (this.end.g - this.start.g),
       b: this.start.b + progression * (this.end.b - this.start.b),
       a: this.start.a + progression * (this.end.a - this.start.a),
     };
-  };
+  }
 }
 
-let linear = (t) => t;
-let ease = cubicBezier(0.24, 0.1, 0.25, 1);
+export let linear = (t) => t;
 
-let el = document.getElementById('el');
-let el2 = document.getElementById('el2');
-let tl = new TimeLine();
-
-tl.add(
-  new Animation(el.style, 'transform', 0, 200, 5000, 0, linear, (v) => {
-    return `translate(${v}px)`;
-  }),
-);
-
-tl.start();
-
-document.getElementById('pause-btn').addEventListener('click', () => {
-  tl.pause();
-});
-
-document.getElementById('resume-btn').addEventListener('click', () => {
-  tl.resume();
-});
-
-document.getElementById('el2-start-btn').addEventListener('click', () => {
-  tl.add(
-    new ColorAnimation(
-      el.style,
-      'backgroundColor',
-      {
-        r: 0,
-        g: 0,
-        b: 0,
-        a: 1,
-      },
-      {
-        r: 255,
-        g: 0,
-        b: 0,
-        a: 1,
-      },
-      5000,
-      0,
-      linear,
-    ),
-    // 0,
-  );
-  /* tl.add(
-    new Animation(el2.style, 'transform', 0, 200, 5000, 0, linear, (v) => {
-      return `translate(${v}px)`;
-    }),
-    // 0,
-  ); */
-});
-
-// document.getElementById('el2').style.transform = 'translateX(200px)';
-
-/* 
-
-let animation = new Animation(object, property, start, end, duration, delay, timingFunction)
-let animation2 = new Animation(object2, property2, start, end, duration, delay, timingFunction)
-
-let timeLine = new TimeLine
-timeLine.add(animation)
-timeLine.add(animation2)
-
-timeLine.start()
-timeLine.pause()
-timeLine.resume()
-timeLine.stop()
-
-setTimeout
-setInterval
-requestAnimationFrame
-
- */
+export let ease = cubicBezier(0.24, 0.1, 0.25, 1);
