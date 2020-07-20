@@ -22,13 +22,37 @@ class Carousel {
   }
 
   loop(root, children) {
-    let tl = new TimeLine();
+    let tl = new TimeLine({
+      loop: true, // 配置循环播放
+      // 以下是各事件触发
+      onStart: () => {
+        console.log('Animation started.');
+      },
+      onStop: (key) => {
+        console.log(`Animation ${key} is stopped.`);
+      },
+      onRestart: () => {
+        console.log(`Animation is restarted.`);
+      },
+      onPause: () => {
+        console.log(`Animation is paused.`);
+      },
+      onResume: () => {
+        console.log(`Animation is resumed.`);
+      },
+      // 通过在所有动画都执行完毕的事件中，执行restart方法重新开始播放，形成循环。
+      onAllStop: () => {
+        console.log(`All animations are stopped, you can restart them now.`);
+        // 也可以在此处手动调用restart方法实现循环播放
+        // tl.restart();
+      },
+    });
     let position = 0;
+    // 每次同时移动的图片有两张，遍历children时，每次设置两张图片的动画
     for (let position = 0; position < children.length; position++) {
       let nextPosition = (position + 1) % children.length;
       tl.add(
         new Animation(
-          position,
           children[position].style,
           'transform',
           -100 * position,
@@ -39,11 +63,11 @@ class Carousel {
           (value, time) => {
             return `translate(${value}%)`;
           },
+          `position: ${position}`,
         ),
       );
       tl.add(
         new Animation(
-          nextPosition,
           children[nextPosition].style,
           'transform',
           100 - 100 * nextPosition,
@@ -54,12 +78,13 @@ class Carousel {
           (value, time) => {
             return `translate(${value}%)`;
           },
+          `nextPosition: ${nextPosition}`,
         ),
       );
     }
-    tl.start();
-    // setTimeout(() => tl.start(), 3000);
+    setTimeout(() => tl.start(), 3000);
 
+    // 基于CSS的轮播方法
     let nextPic = () => {
       let nextPosition = (position + 1) % this.data.length;
       let current = children[position];

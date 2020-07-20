@@ -1,17 +1,27 @@
 import {cubicBezier} from './cubicBezier';
 
 export class TimeLine {
-  constructor() {
-    this.animation = [];
+  constructor(config = {loop: false}) {
+    this.animations = [];
     this.requestID = null;
     this.state = 'inited';
+    // 增加配置，例如运行时是触发事件等
+    this.config = config;
     this.tick = () => {
       let t = Date.now() - this.startTime;
 
-      let animations = this.animation.filter(
+      let animations = this.animations.filter(
         (animation) => !animation.finished,
       );
 
+      // 当所有动画都为finished状态时，表示动画已经运行完成，触发全部停止事件
+      if (!animations.length) {
+        this.config.onAllStop && this.config.onAllStop();
+        // 如果设置了loop为true，则表示要循环播放，此时运行restart
+        if (this.config.loop) {
+          this.restart();
+        }
+      }
       for (const animation of animations) {
         let {
           object,
@@ -21,6 +31,7 @@ export class TimeLine {
           delay,
           timingFunction,
           addTime,
+          key,
         } = animation;
 
         // 处理delay>0时，progression为负数导致delay未生效的问题
@@ -31,6 +42,8 @@ export class TimeLine {
         if (t > duration + delay + addTime) {
           progression = 1;
           animation.finished = true;
+          // 触发播放完成事件，并传入key值，告知是哪段动画停止了。
+          this.config.onStop && this.config.onStop(key);
         }
 
         // 如果time<0，说明还在delay中，不需要设置样式
@@ -55,6 +68,8 @@ export class TimeLine {
     this.pauseTime = Date.now();
     if (this.requestID !== null) {
       cancelAnimationFrame(this.requestID);
+      // 触发暂停事件
+      this.config.onPause && this.config.onPause();
     }
   }
 
@@ -65,6 +80,8 @@ export class TimeLine {
     this.state = 'playing';
     this.startTime += Date.now() - this.pauseTime;
     this.tick();
+    // 触发恢复播放事件
+    this.config.onResume && this.config.onResume();
   }
 
   start() {
@@ -74,23 +91,29 @@ export class TimeLine {
     this.state = 'playing';
     this.startTime = Date.now();
     this.tick();
+    // 触发开始播放事件
+    this.config.onStart && this.config.onStart();
   }
 
   restart() {
     if (this.state === 'playing') {
       this.pause();
     }
-    this.animation = [];
+    // 将finished置为false，确保动画可以正常开始
+    this.animations.forEach((animation) => {
+      animation.finished = false;
+    });
     this.requestID = null;
     this.state = 'playing';
     this.startTime = Date.now();
     this.pauseTime = null;
     this.tick();
+    // 触发重新播放事件
+    this.config.onRestart && this.config.onRestart();
   }
 
   add(animation, addTime) {
-    console.log(animation);
-    this.animation.push(animation);
+    this.animations.push(animation);
     animation.finished = false;
     if (this.state === 'playing') {
       animation.addTime =
@@ -103,7 +126,6 @@ export class TimeLine {
 
 export class Animation {
   constructor(
-    element, // 传入一个element标识参数，主要用于调试。
     object,
     property,
     start,
@@ -112,8 +134,9 @@ export class Animation {
     delay,
     timingFunction,
     template,
+    key, // 传入一个唯一的标识key，用来标识此段动画，可以用于调试或者事件判断等。
   ) {
-    this.element = element;
+    this.key = key;
     this.object = object;
     this.template = template;
     this.property = property;
@@ -131,7 +154,6 @@ export class Animation {
 
 export class ColorAnimation {
   constructor(
-    element,
     object,
     property,
     start,
@@ -140,8 +162,9 @@ export class ColorAnimation {
     delay,
     timingFunction,
     template,
+    key,
   ) {
-    this.element = element;
+    this.key = key;
     this.object = object;
     this.template =
       template ||
