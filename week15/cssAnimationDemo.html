@@ -16,6 +16,8 @@
 
 <body>
   <div id="el"></div>
+  <button onclick="start();">start</button>
+  <button onclick="stop();">stop</button>
   <script>
     let el = document.getElementById('el')
     el.style.transition = 'ease 10s'
@@ -31,8 +33,8 @@
     }
 
     function stop() {
-      el.style.transition = 'none'
       el.style.transform = getComputedStyle(el).transform
+      el.style.transition = 'none'
     }
   </script>
 </body>
