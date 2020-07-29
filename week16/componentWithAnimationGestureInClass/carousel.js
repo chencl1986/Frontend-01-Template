@@ -169,9 +169,6 @@ export class Carousel {
       let current = children[position];
       let next = children[nextPosition];
 
-      console.log(children);
-      console.log(position);
-      console.log(nextPosition);
       let currentAnimation = new Animation(
         current.style,
         'transform',
