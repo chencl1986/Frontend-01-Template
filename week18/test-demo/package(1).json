@@ -1,0 +1,26 @@
+{
+  "name": "code-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "mocha -r esm --watch",
+    "test": "nyc mocha -r esm",
+    "coverage": "npm run test && http-server coverage/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "mocha": "^8.1.1"
+  },
+  "devDependencies": {
+    "ava": "^3.11.1",
+    "istanbul": "^0.4.5",
+    "nyc": "^15.1.0"
+  },
+  "esm": {
+    "cjs": true
+  }
+}
