@@ -43,12 +43,17 @@ function auth(req, res) {
     // console.log('statusCode:', res.statusCode);
     // console.log('headers:', res.headers);
 
+    let result = '';
     response.on('data', (d) => {
-      let result = d.toString().match(/access_token=([^&]+)/);
-      console.log('access_token result', result);
+      result += d.toString();
+    });
 
-      if (result) {
-        let token = result[1];
+    response.on('end', () => {
+      let matchedResult = result.match(/access_token=([^&]+)/);
+      console.log('access_token result', matchedResult);
+
+      if (matchedResult) {
+        let token = matchedResult[1];
         console.log('token', token);
 
         res.writeHead(200, {
