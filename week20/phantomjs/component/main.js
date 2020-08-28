@@ -162,13 +162,13 @@ class Text {
 // https://reactjs.org/docs/introducing-jsx.html
 // 此时调用createElement的顺序为1.Child,2.Child,3.Child,4:Div
 // 在JSX中，组件树构建顺序是子元素->父元素
-let component = (
+const component = (
   // Div在createElement中会传入参数：0: ƒ Div(), 1: {id: "a", class: "b"}, 2: Child {}, 3: Child {}, 4: Child {}
   <Div>
     <p
       id='a'
-      class='b'
-      style={{width: '300px', height: '300px', backgroundColor: 'lightgreen'}}
+      className='b'
+      style={{ width: '300px', height: '300px', backgroundColor: 'lightgreen' }}
     >
       Text in p{new Wrapper('em')}
     </p>
