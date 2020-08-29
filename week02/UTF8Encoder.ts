@@ -2,53 +2,62 @@
 export default class UTF8Encoder {
   /**
    * 将传入字符串或数字编码成UTF-8
-   * @param {string | number} input 输入的字符串或数字
+   * @param {string} input 输入的字符串或数字
    * @return {string} UTF-8编码
    */
-  public static encoding(input: string | number): string {
+  public static encoding(input: string): Array<string[]> {
     if (!String.prototype.codePointAt) {
       UTF8Encoder.codePointAtPolyfill();
     }
 
     if (typeof input !== 'string' && typeof input !== 'number') {
-      return '';
+      return [];
     }
 
-    let str = input.toString();
-    let result = '';
+    let result: string[][] = [];
 
-    for (let index = 0; index < str.length; index++) {
-      const unicode = str.codePointAt(index);
+    Array.from(input).forEach((char: string): void => {
+      const unicode = char.codePointAt(0);
       const unicodeStr = unicode.toString(2);
 
       if (unicode <= 0x007f) {
         const fullUnicode = UTF8Encoder.zeroCompletion(unicodeStr, 7);
-        result += `0${fullUnicode}`;
+        result.push([`0${fullUnicode}`]);
       } else if (unicode <= 0x07ff) {
         const fullUnicode = `${UTF8Encoder.zeroCompletion(unicodeStr, 11)}`;
         const fullUnicodeArr = [fullUnicode.slice(0, 5), fullUnicode.slice(5)];
 
-        result += `110${fullUnicodeArr[0]}10${fullUnicodeArr[1]}`;
+        result.push([`110${fullUnicodeArr[0]}`, `10${fullUnicodeArr[1]}`]);
       } else if (unicode <= 0xffff) {
         const fullUnicode = `${UTF8Encoder.zeroCompletion(unicodeStr, 16)}`;
         const fullUnicodeArr = [
           fullUnicode.slice(0, 4),
-          fullUnicode.slice(4, 6),
+          fullUnicode.slice(4, 10),
           fullUnicode.slice(10),
         ];
 
-        result += `1110${fullUnicodeArr[0]}10${fullUnicodeArr[1]}10${fullUnicodeArr[2]}`;
+        result.push([
+          `1110${fullUnicodeArr[0]}`,
+          `10${fullUnicodeArr[1]}`,
+          `10${fullUnicodeArr[2]}`,
+        ]);
       } else if (unicode <= 0x10ffff) {
         const fullUnicode = `${UTF8Encoder.zeroCompletion(unicodeStr, 16)}`;
         const fullUnicodeArr = [
-          fullUnicode.slice(0, 4),
-          fullUnicode.slice(4, 6),
-          fullUnicode.slice(10),
+          fullUnicode.slice(0, 3),
+          fullUnicode.slice(3, 9),
+          fullUnicode.slice(9, 15),
+          fullUnicode.slice(15),
         ];
 
-        result += `1110${fullUnicodeArr[0]}10${fullUnicodeArr[1]}10${fullUnicodeArr[2]}`;
+        result.push([
+          `11110${fullUnicodeArr[0]}`,
+          `10${fullUnicodeArr[1]}`,
+          `10${fullUnicodeArr[2]}`,
+          `10${fullUnicodeArr[3]}`,
+        ]);
       }
-    }
+    });
 
     return result;
   }
@@ -121,5 +130,9 @@ export default class UTF8Encoder {
   }
 }
 
+console.log(UTF8Encoder.encoding('\u{ffff}'));
+console.log(UTF8Encoder.encoding('\u{10ffff}'));
+console.log(UTF8Encoder.encoding('\u{ffff}\u{10ffff}'));
+console.log(UTF8Encoder.encoding('\u{7f}\u{7ff}\u{ffff}\u{10ffff}'));
 console.log(UTF8Encoder.encoding('012'));
 console.log(UTF8Encoder.encoding('\u0111'));
