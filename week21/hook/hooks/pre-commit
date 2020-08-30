@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+
+console.log('hook is running');
+
+const process = require('process');
+const child_process = require('child_process');
+const {ESLint} = require('eslint');
+
+function exec(command) {
+  return new Promise((resolve, reject) => {
+    child_process.exec(command, resolve);
+  });
+}
+
+(async function main() {
+  // 1. Create an instance.
+  const eslint = new ESLint();
+
+  // 2. Lint files.
+  // 处理已修改但未提交的内容
+  await exec('git stash save -q --keep-index');
+  const results = await eslint.lintFiles(['./main.js']);
+  await exec('git stash pop');
+  // https://github.com/okonet/lint-staged
+
+  // 3. Format the results.
+  const formatter = await eslint.loadFormatter('stylish');
+  const resultText = formatter.format(results);
+
+  // 4. Output it.
+  console.log(resultText);
+
+  console.log(results);
+
+  // 若有文件无法通过检验，则不可提交
+  for (const result of results) {
+    if (result.errorCount > 0) {
+      process.exitCode = 1;
+    }
+  }
+})().catch((error) => {
+  process.exitCode = 1;
+  console.error(error);
+});
